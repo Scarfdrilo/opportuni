@@ -420,8 +420,8 @@ iframe[src*="accesly"] {
 /* ===== Connect Button Portal ===== */
 .connect-button-portal {
   position: fixed;
-  top: 20px;
-  right: max(calc(50% - 430px), 40px);
+  top: 18px;
+  right: max(calc(50% - 420px), 32px);
   z-index: 1000;
 }
 
@@ -509,6 +509,8 @@ div[class*="Panel"][style*="position"] {
 /* ===== User Pill (logged in state) ===== */
 .user-pill-wrapper {
   position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .user-pill {
@@ -524,7 +526,7 @@ div[class*="Panel"][style*="position"] {
   font-size: 14px;
   font-weight: 700;
   color: var(--dark);
-  cursor: pointer;
+  pointer-events: none;
 }
 
 .user-pill-avatar {
@@ -535,23 +537,20 @@ div[class*="Panel"][style*="position"] {
   object-fit: cover;
 }
 
-.user-pill:hover {
-  transform: translate(-1px, -1px);
-  box-shadow: 3px 3px 0 var(--dark);
-}
-
-/* Hidden ConnectButton - click on pill opens it */
+/* Hidden ConnectButton overlays the pill - receives all clicks */
 .hidden-connect {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  opacity: 0;
-  cursor: pointer;
+  z-index: 10;
 }
 
+.hidden-connect > div,
 .hidden-connect button {
   width: 100% !important;
   height: 100% !important;
+  opacity: 0 !important;
+  cursor: pointer !important;
 }
