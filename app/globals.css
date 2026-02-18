@@ -424,3 +424,40 @@ iframe[src*="accesly"] {
   right: max(calc(50% - 460px + 20px), 36px);
   z-index: 1000;
 }
+
+/* ===== Accesly ConnectButton Custom Styling (Vianney bento style) ===== */
+.connect-button-portal button,
+.connect-button-portal [class*="connect"] {
+  font-family: Gabarito, var(--font-body), system-ui, sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  padding: 10px 20px !important;
+  border-radius: 9999px !important;
+  border: 2.5px solid var(--dark) !important;
+  background: var(--rosa) !important;
+  color: white !important;
+  box-shadow: 2px 2px 0 var(--dark) !important;
+  transition: all 0.2s ease !important;
+  cursor: pointer !important;
+}
+
+.connect-button-portal button:hover,
+.connect-button-portal [class*="connect"]:hover {
+  transform: translate(-1px, -1px) !important;
+  box-shadow: 3px 3px 0 var(--dark) !important;
+}
+
+/* When connected - show pill style */
+.connect-button-portal [class*="wallet"],
+.connect-button-portal [class*="address"],
+.connect-button-portal [class*="connected"] {
+  font-family: Gabarito, var(--font-body), system-ui, sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  padding: 8px 16px !important;
+  border-radius: 9999px !important;
+  border: 2.5px solid var(--dark) !important;
+  background: var(--cream) !important;
+  color: var(--dark) !important;
+  box-shadow: 2px 2px 0 var(--dark) !important;
+}
