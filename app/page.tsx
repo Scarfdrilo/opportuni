@@ -31,28 +31,24 @@ export default function Home() {
     <div className="min-h-screen" style={{ background: "var(--cream)" }}>
       {/* ========== CONNECT BUTTON PORTAL (outside nav for modal z-index) ========== */}
       <div className="connect-button-portal">
-        {/* Hidden ConnectButton - always present for functionality */}
-        <div id="accesly-trigger" style={{ position: 'absolute', opacity: 0, pointerEvents: 'none', width: 1, height: 1, overflow: 'hidden' }}>
-          <ConnectButton />
+        <div className="connect-wrapper">
+          {/* Custom visible button/pill underneath */}
+          {wallet ? (
+            <div className="user-pill">
+              <img src="/logo-opportuni.png" alt="" className="user-pill-avatar" />
+              <span>{getNameFromEmail(wallet.email)}</span>
+            </div>
+          ) : (
+            <div className="login-button">
+              Iniciar sesión
+            </div>
+          )}
+          
+          {/* Real ConnectButton on top but invisible - receives clicks */}
+          <div className="connect-overlay">
+            <ConnectButton />
+          </div>
         </div>
-        
-        {/* Custom visible button/pill */}
-        {wallet ? (
-          <button 
-            className="user-pill"
-            onClick={() => (document.querySelector('#accesly-trigger button') as HTMLButtonElement)?.click()}
-          >
-            <img src="/logo-opportuni.png" alt="" className="user-pill-avatar" />
-            <span>{getNameFromEmail(wallet.email)}</span>
-          </button>
-        ) : (
-          <button 
-            className="login-button"
-            onClick={() => (document.querySelector('#accesly-trigger button') as HTMLButtonElement)?.click()}
-          >
-            Iniciar sesión
-          </button>
-        )}
       </div>
 
       {/* ========== NAV ========== */}

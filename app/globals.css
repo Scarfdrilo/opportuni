@@ -524,3 +524,26 @@ div[class*="Panel"][style*="position"] {
   border: 2px solid var(--dark);
   object-fit: cover;
 }
+
+/* ===== Connect Wrapper with Overlay ===== */
+.connect-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.connect-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+}
+
+.connect-overlay > div,
+.connect-overlay button {
+  width: 100% !important;
+  height: 100% !important;
+  opacity: 0 !important;
+  cursor: pointer !important;
+}
