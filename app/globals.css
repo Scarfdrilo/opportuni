@@ -207,7 +207,7 @@
 
   /* ===== Nav ===== */
   .nav-bento {
-    position: fixed;
+    position: sticky;
     top: 12px;
     left: 50%;
     transform: translateX(-50%);
