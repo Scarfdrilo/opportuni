@@ -420,8 +420,8 @@ iframe[src*="accesly"] {
 /* ===== Connect Button Portal ===== */
 .connect-button-portal {
   position: fixed;
-  top: 22px;
-  right: max(calc(50% - 460px + 20px), 36px);
+  top: 18px;
+  right: max(calc(50% - 440px), 24px);
   z-index: 1000;
 }
 
@@ -461,3 +461,34 @@ iframe[src*="accesly"] {
   color: var(--dark) !important;
   box-shadow: 2px 2px 0 var(--dark) !important;
 }
+
+/* ===== ConnectButton Text Override ===== */
+.connect-button-portal button span,
+.connect-button-portal button [class*="text"] {
+  font-size: 0 !important;
+  color: transparent !important;
+}
+
+.connect-button-portal button::after {
+  content: "Iniciar sesión" !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  color: white !important;
+}
+
+/* Hide wallet icon if present */
+.connect-button-portal button svg:first-child {
+  display: none !important;
+}
+
+/* ===== Accesly Panel Bento Style ===== */
+[data-accesly-panel],
+div[class*="WalletPanel"],
+div[class*="Panel"][style*="position"] {
+  border: 2.5px solid var(--dark) !important;
+  border-radius: var(--r-lg, 28px) !important;
+  box-shadow: 4px 4px 0 var(--dark) !important;
+  background: var(--dark, #1a1a2e) !important;
+}
+
+/* Adjust portal position for better centering */
