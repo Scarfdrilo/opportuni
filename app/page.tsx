@@ -31,24 +31,20 @@ export default function Home() {
     <div className="min-h-screen" style={{ background: "var(--cream)" }}>
       {/* ========== CONNECT BUTTON PORTAL (outside nav for modal z-index) ========== */}
       <div className="connect-button-portal">
-        <div className="connect-wrapper">
-          {/* Custom visible button/pill underneath */}
-          {wallet ? (
+        {wallet ? (
+          <div className="user-pill-wrapper">
             <div className="user-pill">
               <img src="/logo-opportuni.png" alt="" className="user-pill-avatar" />
               <span>{getNameFromEmail(wallet.email)}</span>
             </div>
-          ) : (
-            <div className="login-button">
-              Iniciar sesión
+            {/* Hidden ConnectButton for panel access */}
+            <div className="hidden-connect">
+              <ConnectButton />
             </div>
-          )}
-          
-          {/* Real ConnectButton on top but invisible - receives clicks */}
-          <div className="connect-overlay">
-            <ConnectButton />
           </div>
-        </div>
+        ) : (
+          <ConnectButton />
+        )}
       </div>
 
       {/* ========== NAV ========== */}

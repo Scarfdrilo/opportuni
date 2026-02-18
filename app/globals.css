@@ -420,8 +420,8 @@ iframe[src*="accesly"] {
 /* ===== Connect Button Portal ===== */
 .connect-button-portal {
   position: fixed;
-  top: 18px;
-  right: max(calc(50% - 420px), 32px);
+  top: 19px;
+  right: max(calc(50% - 438px), 28px);
   z-index: 1000;
 }
 
@@ -462,24 +462,31 @@ iframe[src*="accesly"] {
   box-shadow: 2px 2px 0 var(--dark) !important;
 }
 
-/* ===== Custom Login Button ===== */
-.login-button {
-  font-family: Gabarito, var(--font-body), system-ui, sans-serif;
-  font-size: 14px;
-  font-weight: 700;
-  padding: 12px 24px;
-  background: var(--rosa);
-  color: white;
-  border: 2.5px solid var(--dark);
-  border-radius: 9999px;
-  box-shadow: 2px 2px 0 var(--dark);
-  cursor: pointer;
-  transition: all 0.15s ease;
+/* ===== ConnectButton Text Override ===== */
+/* ONLY the main connect button - first direct child */
+.connect-button-portal > div > button,
+.connect-button-portal > button {
+  font-size: 0 !important;
+  position: relative !important;
 }
 
-.login-button:hover {
-  transform: translate(-1px, -1px);
-  box-shadow: 3px 3px 0 var(--dark);
+.connect-button-portal > div > button > *,
+.connect-button-portal > button > * {
+  visibility: hidden !important;
+}
+
+.connect-button-portal > div > button::after,
+.connect-button-portal > button::after {
+  content: "Iniciar sesión" !important;
+  visibility: visible !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  position: absolute !important;
+  inset: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: white !important;
 }
 
 /* ===== Accesly Panel Bento Style ===== */
@@ -495,6 +502,10 @@ div[class*="Panel"][style*="position"] {
 /* Adjust portal position for better centering */
 
 /* ===== User Pill (logged in state) ===== */
+.user-pill-wrapper {
+  position: relative;
+}
+
 .user-pill {
   display: flex;
   align-items: center;
@@ -509,12 +520,6 @@ div[class*="Panel"][style*="position"] {
   font-weight: 700;
   color: var(--dark);
   cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.user-pill:hover {
-  transform: translate(-1px, -1px);
-  box-shadow: 3px 3px 0 var(--dark);
 }
 
 .user-pill-avatar {
@@ -525,25 +530,23 @@ div[class*="Panel"][style*="position"] {
   object-fit: cover;
 }
 
-/* ===== Connect Wrapper with Overlay ===== */
-.connect-wrapper {
-  position: relative;
-  display: inline-block;
+.user-pill:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 var(--dark);
 }
 
-.connect-overlay {
+/* Hidden ConnectButton - click on pill opens it */
+.hidden-connect {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 10;
+  opacity: 0;
+  cursor: pointer;
 }
 
-.connect-overlay > div,
-.connect-overlay button {
+.hidden-connect button {
   width: 100% !important;
   height: 100% !important;
-  opacity: 0 !important;
-  cursor: pointer !important;
 }
