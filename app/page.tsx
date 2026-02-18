@@ -32,7 +32,7 @@ export default function Home() {
       {/* ========== CONNECT BUTTON PORTAL (outside nav for modal z-index) ========== */}
       <div className="connect-button-portal">
         {/* Hidden ConnectButton - always present for functionality */}
-        <div id="accesly-trigger" style={{ position: 'absolute', opacity: 0, pointerEvents: 'none' }}>
+        <div id="accesly-trigger" style={{ position: 'absolute', opacity: 0, pointerEvents: 'none', width: 1, height: 1, overflow: 'hidden' }}>
           <ConnectButton />
         </div>
         
@@ -40,7 +40,7 @@ export default function Home() {
         {wallet ? (
           <button 
             className="user-pill"
-            onClick={() => document.querySelector('#accesly-trigger button')?.dispatchEvent(new MouseEvent('click', { bubbles: true }))}
+            onClick={() => (document.querySelector('#accesly-trigger button') as HTMLButtonElement)?.click()}
           >
             <img src="/logo-opportuni.png" alt="" className="user-pill-avatar" />
             <span>{getNameFromEmail(wallet.email)}</span>
@@ -48,7 +48,7 @@ export default function Home() {
         ) : (
           <button 
             className="login-button"
-            onClick={() => document.querySelector('#accesly-trigger button')?.dispatchEvent(new MouseEvent('click', { bubbles: true }))}
+            onClick={() => (document.querySelector('#accesly-trigger button') as HTMLButtonElement)?.click()}
           >
             Iniciar sesión
           </button>
