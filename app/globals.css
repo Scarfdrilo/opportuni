@@ -463,8 +463,8 @@ iframe[src*="accesly"] {
 }
 
 /* ===== ConnectButton Text Override ===== */
-/* ONLY the main connect button - when NOT logged in */
-.connect-button-portal > div > button,
+/* ONLY the main connect button - when NOT logged in (direct child, not inside .user-pill-wrapper) */
+.connect-button-portal > div:not(.user-pill-wrapper) > button,
 .connect-button-portal > button {
   font-size: 0 !important;
   position: relative !important;
@@ -473,13 +473,13 @@ iframe[src*="accesly"] {
   white-space: nowrap !important;
 }
 
-.connect-button-portal > div > button > *,
+.connect-button-portal > div:not(.user-pill-wrapper) > button > *,
 .connect-button-portal > button > * {
   visibility: hidden !important;
   position: absolute !important;
 }
 
-.connect-button-portal > div > button::after,
+.connect-button-portal > div:not(.user-pill-wrapper) > button::after,
 .connect-button-portal > button::after {
   content: "Iniciar sesión" !important;
   visibility: visible !important;
@@ -545,12 +545,15 @@ div[class*="Panel"][style*="position"] {
   right: 0;
   bottom: 0;
   z-index: 10;
+  overflow: hidden;
 }
 
-.hidden-connect > div,
-.hidden-connect button {
+/* Make the hidden connect button invisible but clickable */
+.user-pill-wrapper .hidden-connect > div,
+.user-pill-wrapper .hidden-connect button {
   width: 100% !important;
   height: 100% !important;
   opacity: 0 !important;
   cursor: pointer !important;
+  min-width: unset !important;
 }
