@@ -500,3 +500,53 @@ div[class*="Panel"][style*="position"] {
 }
 
 /* Adjust portal position for better centering */
+
+/* ===== User Pill (logged in state) ===== */
+.user-pill-wrapper {
+  position: relative;
+}
+
+.user-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px 8px 8px;
+  background: var(--cream);
+  border: 2.5px solid var(--dark);
+  border-radius: 9999px;
+  box-shadow: 2px 2px 0 var(--dark);
+  font-family: Gabarito, var(--font-body), system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--dark);
+  cursor: pointer;
+}
+
+.user-pill-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid var(--dark);
+  object-fit: cover;
+}
+
+.user-pill:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 var(--dark);
+}
+
+/* Hidden ConnectButton - click on pill opens it */
+.hidden-connect {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.hidden-connect button {
+  width: 100% !important;
+  height: 100% !important;
+}

@@ -31,7 +31,20 @@ export default function Home() {
     <div className="min-h-screen" style={{ background: "var(--cream)" }}>
       {/* ========== CONNECT BUTTON PORTAL (outside nav for modal z-index) ========== */}
       <div className="connect-button-portal">
-        <ConnectButton />
+        {wallet ? (
+          <div className="user-pill-wrapper">
+            <div className="user-pill">
+              <img src="/logo-opportuni.png" alt="" className="user-pill-avatar" />
+              <span>{getNameFromEmail(wallet.email)}</span>
+            </div>
+            {/* Hidden ConnectButton for panel access */}
+            <div className="hidden-connect">
+              <ConnectButton />
+            </div>
+          </div>
+        ) : (
+          <ConnectButton />
+        )}
       </div>
 
       {/* ========== NAV ========== */}
