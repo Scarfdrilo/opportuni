@@ -398,13 +398,15 @@
   background: var(--rosa);
 }
 
-/* ===== Accesly Panel Positioning ===== */
+/* ===== Accesly Modal z-index fix ===== */
+[data-accesly-modal],
 [data-accesly-panel],
-[class*="accesly"] > div[style*="position: fixed"],
-div[style*="position: fixed"][style*="z-index: 9999"] {
-  top: 50% !important;
-  left: 50% !important;
-  transform: translate(-50%, -50%) !important;
-  max-height: 90vh !important;
-  overflow-y: auto !important;
+div[class*="AcceslyModal"],
+div[class*="WalletPanel"] {
+  z-index: 9999 !important;
+}
+
+/* Ensure nav doesn't block Accesly */
+.nav-bento {
+  z-index: 100;
 }
