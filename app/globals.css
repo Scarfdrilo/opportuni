@@ -463,16 +463,20 @@ iframe[src*="accesly"] {
 }
 
 /* ===== ConnectButton Text Override ===== */
-/* ONLY the main connect button - first direct child */
+/* ONLY the main connect button - when NOT logged in */
 .connect-button-portal > div > button,
 .connect-button-portal > button {
   font-size: 0 !important;
   position: relative !important;
+  min-width: 140px !important;
+  height: 44px !important;
+  white-space: nowrap !important;
 }
 
 .connect-button-portal > div > button > *,
 .connect-button-portal > button > * {
   visibility: hidden !important;
+  position: absolute !important;
 }
 
 .connect-button-portal > div > button::after,
@@ -487,6 +491,7 @@ iframe[src*="accesly"] {
   align-items: center !important;
   justify-content: center !important;
   color: white !important;
+  white-space: nowrap !important;
 }
 
 /* ===== Accesly Panel Bento Style ===== */
