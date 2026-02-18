@@ -463,8 +463,31 @@ iframe[src*="accesly"] {
 }
 
 /* ===== ConnectButton Text Override ===== */
-/* ONLY target the direct connect button, not panel buttons */
-/* Leave the panel buttons alone - remove all ::before overrides */
+/* ONLY the main connect button - first direct child */
+.connect-button-portal > div > button,
+.connect-button-portal > button {
+  font-size: 0 !important;
+  position: relative !important;
+}
+
+.connect-button-portal > div > button > *,
+.connect-button-portal > button > * {
+  visibility: hidden !important;
+}
+
+.connect-button-portal > div > button::after,
+.connect-button-portal > button::after {
+  content: "Iniciar sesión" !important;
+  visibility: visible !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  position: absolute !important;
+  inset: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: white !important;
+}
 
 /* ===== Accesly Panel Bento Style ===== */
 [data-accesly-panel],
