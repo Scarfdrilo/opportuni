@@ -1,6 +1,6 @@
 "use client";
 
-import { useAccesly } from "accesly";
+import { ConnectButton, useAccesly } from "accesly";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -24,9 +24,8 @@ const getNameFromEmail = (email: string) => {
 };
 
 export default function Home() {
-  const { wallet, connect, disconnect, loading } = useAccesly();
+  const { wallet } = useAccesly();
   const [showDrop, setShowDrop] = useState(false);
-  const [showUserMenu, setShowUserMenu] = useState(false);
 
   return (
     <div className="min-h-screen" style={{ background: "var(--cream)" }}>
@@ -48,48 +47,7 @@ export default function Home() {
             </a>
           ))}
         </div>
-        {wallet ? (
-          <div className="relative">
-            <button
-              onClick={() => setShowUserMenu(!showUserMenu)}
-              className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity"
-            >
-              <div className="w-8 h-8 rounded-full border-bento border-opportuni-dark overflow-hidden flex items-center justify-center" style={{ background: "var(--cream)", boxShadow: "2px 2px 0 var(--dark)" }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/logo-opportuni.png" alt="" style={{ height: 22, width: "auto" }} />
-              </div>
-              <span className="font-gabarito text-sm font-bold text-opportuni-dark hidden sm:inline">
-                {getNameFromEmail(wallet.email)}
-              </span>
-              <span className="text-xs text-gray-400">▾</span>
-            </button>
-            {showUserMenu && (
-              <div className="absolute top-full mt-2 right-0 bento p-2 min-w-[160px] z-50" style={{ background: "var(--cream)" }}>
-                <div className="px-3 py-2 text-xs text-gray-400 border-b border-gray-200 mb-1">
-                  {wallet.email}
-                </div>
-                <button
-                  onClick={() => {
-                    disconnect();
-                    setShowUserMenu(false);
-                  }}
-                  className="w-full text-left px-3 py-2 text-sm font-bold text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                >
-                  Cerrar sesión
-                </button>
-              </div>
-            )}
-          </div>
-        ) : (
-          <button
-            onClick={() => connect()}
-            disabled={loading}
-            className="font-gabarito text-sm font-bold px-5 py-2 rounded-full border-bento border-opportuni-dark cursor-pointer transition-all disabled:opacity-50"
-            style={{ background: "var(--rosa)", color: "white", boxShadow: "2px 2px 0 var(--dark)" }}
-          >
-            {loading ? "Cargando..." : "Iniciar sesión"}
-          </button>
-        )}
+        <ConnectButton />
       </nav>
 
       <main className="pt-[90px]">
