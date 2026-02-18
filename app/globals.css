@@ -398,15 +398,21 @@
   background: var(--rosa);
 }
 
-/* ===== Accesly Modal z-index fix ===== */
-[data-accesly-modal],
-[data-accesly-panel],
-div[class*="AcceslyModal"],
-div[class*="WalletPanel"] {
-  z-index: 9999 !important;
+/* ===== Accesly Modal Fix ===== */
+/* The modal backdrop and container need highest z-index */
+body > div[style*="position: fixed"][style*="inset: 0"],
+body > div[style*="position: fixed"][style*="z-index"],
+div[role="dialog"],
+div[aria-modal="true"] {
+  z-index: 99999 !important;
 }
 
-/* Ensure nav doesn't block Accesly */
+/* Ensure nav stays below modals */
 .nav-bento {
   z-index: 100;
+}
+
+/* Force any iframe from accesly to be on top */
+iframe[src*="accesly"] {
+  z-index: 99999 !important;
 }
