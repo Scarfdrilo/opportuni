@@ -397,3 +397,14 @@
 ::-webkit-scrollbar-thumb:hover {
   background: var(--rosa);
 }
+
+/* ===== Accesly Panel Positioning ===== */
+[data-accesly-panel],
+[class*="accesly"] > div[style*="position: fixed"],
+div[style*="position: fixed"][style*="z-index: 9999"] {
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  max-height: 90vh !important;
+  overflow-y: auto !important;
+}
