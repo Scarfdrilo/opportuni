@@ -462,36 +462,24 @@ iframe[src*="accesly"] {
   box-shadow: 2px 2px 0 var(--dark) !important;
 }
 
-/* ===== ConnectButton Text Override ===== */
-/* ONLY the main connect button - when NOT logged in (direct child, not inside .user-pill-wrapper) */
-.connect-button-portal > div:not(.user-pill-wrapper) > button,
-.connect-button-portal > button {
-  font-size: 0 !important;
-  position: relative !important;
-  min-width: 140px !important;
-  height: 44px !important;
-  white-space: nowrap !important;
+/* ===== Custom Login Button ===== */
+.login-button {
+  font-family: Gabarito, var(--font-body), system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 12px 24px;
+  background: var(--rosa);
+  color: white;
+  border: 2.5px solid var(--dark);
+  border-radius: 9999px;
+  box-shadow: 2px 2px 0 var(--dark);
+  cursor: pointer;
+  transition: all 0.15s ease;
 }
 
-.connect-button-portal > div:not(.user-pill-wrapper) > button > *,
-.connect-button-portal > button > * {
-  visibility: hidden !important;
-  position: absolute !important;
-}
-
-.connect-button-portal > div:not(.user-pill-wrapper) > button::after,
-.connect-button-portal > button::after {
-  content: "Iniciar sesión" !important;
-  visibility: visible !important;
-  font-size: 14px !important;
-  font-weight: 700 !important;
-  position: absolute !important;
-  inset: 0 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  color: white !important;
-  white-space: nowrap !important;
+.login-button:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 var(--dark);
 }
 
 /* ===== Accesly Panel Bento Style ===== */
@@ -507,12 +495,6 @@ div[class*="Panel"][style*="position"] {
 /* Adjust portal position for better centering */
 
 /* ===== User Pill (logged in state) ===== */
-.user-pill-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
 .user-pill {
   display: flex;
   align-items: center;
@@ -526,7 +508,13 @@ div[class*="Panel"][style*="position"] {
   font-size: 14px;
   font-weight: 700;
   color: var(--dark);
-  pointer-events: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.user-pill:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 var(--dark);
 }
 
 .user-pill-avatar {
@@ -535,25 +523,4 @@ div[class*="Panel"][style*="position"] {
   border-radius: 50%;
   border: 2px solid var(--dark);
   object-fit: cover;
-}
-
-/* Hidden ConnectButton overlays the pill - receives all clicks */
-.hidden-connect {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 10;
-  overflow: hidden;
-}
-
-/* Make the hidden connect button invisible but clickable */
-.user-pill-wrapper .hidden-connect > div,
-.user-pill-wrapper .hidden-connect button {
-  width: 100% !important;
-  height: 100% !important;
-  opacity: 0 !important;
-  cursor: pointer !important;
-  min-width: unset !important;
 }

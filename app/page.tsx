@@ -31,19 +31,27 @@ export default function Home() {
     <div className="min-h-screen" style={{ background: "var(--cream)" }}>
       {/* ========== CONNECT BUTTON PORTAL (outside nav for modal z-index) ========== */}
       <div className="connect-button-portal">
-        {wallet ? (
-          <div className="user-pill-wrapper">
-            <div className="user-pill">
-              <img src="/logo-opportuni.png" alt="" className="user-pill-avatar" />
-              <span>{getNameFromEmail(wallet.email)}</span>
-            </div>
-            {/* Hidden ConnectButton for panel access */}
-            <div className="hidden-connect">
-              <ConnectButton />
-            </div>
-          </div>
-        ) : (
+        {/* Hidden ConnectButton - always present for functionality */}
+        <div id="accesly-trigger" style={{ position: 'absolute', opacity: 0, pointerEvents: 'none' }}>
           <ConnectButton />
+        </div>
+        
+        {/* Custom visible button/pill */}
+        {wallet ? (
+          <button 
+            className="user-pill"
+            onClick={() => document.querySelector('#accesly-trigger button')?.dispatchEvent(new MouseEvent('click', { bubbles: true }))}
+          >
+            <img src="/logo-opportuni.png" alt="" className="user-pill-avatar" />
+            <span>{getNameFromEmail(wallet.email)}</span>
+          </button>
+        ) : (
+          <button 
+            className="login-button"
+            onClick={() => document.querySelector('#accesly-trigger button')?.dispatchEvent(new MouseEvent('click', { bubbles: true }))}
+          >
+            Iniciar sesión
+          </button>
         )}
       </div>
 
