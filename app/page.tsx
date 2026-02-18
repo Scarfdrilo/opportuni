@@ -29,6 +29,11 @@ export default function Home() {
 
   return (
     <div className="min-h-screen" style={{ background: "var(--cream)" }}>
+      {/* ========== CONNECT BUTTON PORTAL (outside nav for modal z-index) ========== */}
+      <div className="connect-button-portal">
+        <ConnectButton />
+      </div>
+
       {/* ========== NAV ========== */}
       <nav className="nav-bento">
         <div className="flex items-center gap-[10px]">
@@ -47,7 +52,8 @@ export default function Home() {
             </a>
           ))}
         </div>
-        <ConnectButton />
+        {/* Placeholder for visual alignment */}
+        <div style={{ width: 140 }} />
       </nav>
 
       <main className="pt-[90px]">

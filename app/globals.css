@@ -207,7 +207,7 @@
 
   /* ===== Nav ===== */
   .nav-bento {
-    position: sticky;
+    position: fixed;
     top: 12px;
     left: 50%;
     transform: translateX(-50%);
@@ -415,4 +415,12 @@ div[aria-modal="true"] {
 /* Force any iframe from accesly to be on top */
 iframe[src*="accesly"] {
   z-index: 99999 !important;
+}
+
+/* ===== Connect Button Portal ===== */
+.connect-button-portal {
+  position: fixed;
+  top: 22px;
+  right: max(calc(50% - 460px + 20px), 36px);
+  z-index: 1000;
 }
