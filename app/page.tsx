@@ -97,10 +97,7 @@ export default function Home() {
               </p>
 
               <div className="flex flex-wrap gap-3 mb-6">
-                <Link href="/convocatorias" className="btn-pill-icon">
-                  <img src="/logo-opportuni.png" alt="" className="btn-pill-icon-img" />
-                  <span>Ver convocatorias</span>
-                </Link>
+                <Link href="/convocatorias" className="btn-primary">Ver convocatorias ✦</Link>
                 <div className="relative">
                   <button onClick={() => setShowDrop(!showDrop)} className="btn-secondary">
                     Unirme al grupo ▾

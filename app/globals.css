@@ -576,3 +576,24 @@ div[class*="Panel"][style*="position"] {
   width: 100% !important;
   height: 100% !important;
 }
+
+/* Login button wrapper - btn-primary with hidden ConnectButton overlay */
+.login-btn-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.login-btn-wrapper .hidden-connect {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.login-btn-wrapper .hidden-connect button {
+  width: 100% !important;
+  height: 100% !important;
+}
