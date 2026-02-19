@@ -5,6 +5,11 @@ import Link from "next/link";
 import { useState } from "react";
 import { convocatorias, Convocatoria } from "../lib/convocatorias-store";
 
+const getNameFromEmail = (email: string) => {
+  const name = email.split("@")[0].replace(/[._-]/g, " ");
+  return name.split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+};
+
 const tipoColors: Record<string, string> = {
   "Programa": "badge-rosa",
   "Aceleradora": "badge-naranja",
@@ -75,6 +80,23 @@ export default function ConvocatoriasPage() {
 
   return (
     <div className="min-h-screen" style={{ background: "var(--cream)" }}>
+      {/* Connect Button Portal */}
+      <div className="connect-button-portal">
+        {wallet ? (
+          <div className="user-pill-wrapper">
+            <div className="user-pill">
+              <img src="/logo-opportuni.png" alt="" className="user-pill-avatar" />
+              <span>{getNameFromEmail(wallet.email)}</span>
+            </div>
+            <div className="hidden-connect">
+              <ConnectButton />
+            </div>
+          </div>
+        ) : (
+          <ConnectButton />
+        )}
+      </div>
+
       {/* Nav */}
       <nav className="nav-bento">
         <Link href="/" className="flex items-center gap-[10px]">
@@ -85,7 +107,8 @@ export default function ConvocatoriasPage() {
           <Link href="/" className="text-sm font-semibold text-gray-500 hover:text-opportuni-rosa">
             Inicio
           </Link>
-          <ConnectButton />
+          {/* Placeholder for alignment */}
+          <div style={{ width: 140 }} />
         </div>
       </nav>
 
