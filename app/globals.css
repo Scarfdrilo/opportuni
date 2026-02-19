@@ -153,6 +153,30 @@
     color: white;
   }
 
+  .btn-pill-icon {
+    @apply relative inline-flex items-center gap-3 font-bold rounded-full cursor-pointer;
+    font-family: Gabarito, var(--font-body), sans-serif;
+    padding: 6px 24px 6px 6px;
+    font-size: 15px;
+    background: var(--cream);
+    color: var(--dark);
+    border: 2.5px solid var(--dark);
+    box-shadow: 3px 3px 0 var(--dark);
+    transition: all 0.2s var(--ease);
+  }
+  .btn-pill-icon:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 var(--dark);
+  }
+  .btn-pill-icon-img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px solid var(--dark);
+    object-fit: contain;
+    background: white;
+  }
+
   /* ===== Pill / Badge ===== */
   .pill {
     display: inline-flex;
