@@ -50,6 +50,9 @@ export default function Home() {
   const { wallet } = useAccesly();
   const [showDrop, setShowDrop] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [showStep1Drop, setShowStep1Drop] = useState(false);
+  const [showStep2Drop, setShowStep2Drop] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
 
   return (
     <div className="min-h-screen" style={{ background: "var(--cream)" }}>
@@ -201,33 +204,174 @@ export default function Home() {
           <path d="M0 30C50 30 50 0 100 0C150 0 150 30 200 30C250 30 250 0 300 0C350 0 350 30 400 30C450 30 450 0 500 0C550 0 550 30 600 30C650 30 650 0 700 0C750 0 750 30 800 30C850 30 850 0 900 0C950 0 950 30 1000 30C1050 30 1050 0 1100 0C1150 0 1150 30 1200 30V0H0Z" />
         </svg>
 
-        {/* ========== COMO FUNCIONA ========== */}
+        {/* ========== COMO FUNCIONA - 4 PASOS ========== */}
         <section id="como" className="py-20 px-4" style={{ background: "var(--cream)" }}>
           <div className="max-w-[1140px] mx-auto">
-            <h2 className="text-3xl md:text-4xl font-black text-center mb-14">
-              Tres pasos. Cero excusas. <span className="animate-twinkle inline-block" style={{ color: "var(--nar)" }}>✦</span>
-            </h2>
+            <div className="text-center mb-14">
+              <span className="text-2xl" style={{ color: "var(--lila)" }}>★</span>
+              <h2 className="text-3xl md:text-4xl font-black mt-2">
+                Cuatro pasos. <span className="font-playfair italic" style={{ color: "var(--rosa)" }}>Así de fácil.</span> <span className="animate-twinkle inline-block" style={{ color: "var(--nar)" }}>✦</span>
+              </h2>
+            </div>
 
-            <div className="grid md:grid-cols-3 gap-6">
-              {[
-                { n: "1", title: "Únete al grupo", desc: "Escoge México o Colombia y entra al grupo de WhatsApp. 10 segundos.", color: "var(--rosa)" },
-                { n: "2", title: "Escoge tu subcomunidad", desc: "Ingeniería, Negocios, Creativos, Ciencias Sociales o Web3.", color: "var(--lila)" },
-                { n: "3", title: "Recibe y crece", desc: "Oportunidades en tu teléfono cada semana. Conecta con la comunidad.", color: "var(--nar)" },
-              ].map((step) => (
-                <div key={step.n} className="bento p-7 group">
-                  <div className="relative w-[70px] h-[70px] mb-5">
-                    <svg viewBox="0 0 70 70" className="w-full h-full">
-                      <ellipse cx="35" cy="35" rx="34" ry="33" fill={step.color} />
-                    </svg>
-                    <span className="absolute inset-0 flex items-center justify-center text-white font-gabarito font-black text-2xl">{step.n}</span>
-                  </div>
-                  <h3 className="text-xl font-black mb-2">{step.title}</h3>
-                  <p className="text-sm text-gray-500 leading-relaxed">{step.desc}</p>
+            <div className="grid md:grid-cols-4 gap-4">
+              {/* Paso 1 - Únete al grupo */}
+              <div className="bento p-6 text-center">
+                <div className="relative w-[60px] h-[60px] mb-4 mx-auto">
+                  <svg viewBox="0 0 60 60" className="w-full h-full">
+                    <circle cx="30" cy="30" r="28" fill="var(--rosa)" />
+                  </svg>
+                  <span className="absolute inset-0 flex items-center justify-center text-white font-gabarito font-black text-xl">1</span>
                 </div>
-              ))}
+                <h3 className="text-lg font-black mb-2">Únete al grupo</h3>
+                <p className="text-sm text-gray-500 leading-relaxed mb-4">Selecciona tu país y entra al grupo principal de WhatsApp.</p>
+                <div className="relative">
+                  <button 
+                    onClick={() => setShowStep1Drop(!showStep1Drop)}
+                    className="w-full py-3 px-4 rounded-full font-bold text-sm text-white flex items-center justify-center gap-2"
+                    style={{ background: "var(--rosa)" }}
+                  >
+                    Unirme al grupo {showStep1Drop ? "▲" : "▼"}
+                  </button>
+                  {showStep1Drop && (
+                    <div className="mt-3 border-2 border-gray-200 rounded-2xl overflow-hidden bg-white">
+                      <a href="https://chat.whatsapp.com/LqwA94ukn1O2laee8WP9tN" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-3 hover:bg-gray-50 transition-colors border-b border-gray-100">
+                        <span className="text-xl">🇲🇽</span>
+                        <span className="font-bold text-sm">México</span>
+                        <span className="text-xs ml-auto" style={{ color: "var(--rosa)" }}>+8K</span>
+                      </a>
+                      <a href="https://chat.whatsapp.com/JsVEfmT8Iiv1R1fZWVqqdf" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-3 hover:bg-gray-50 transition-colors">
+                        <span className="text-xl">🇨🇴</span>
+                        <span className="font-bold text-sm">Colombia</span>
+                        <span className="text-xs ml-auto" style={{ color: "var(--rosa)" }}>+1.5K</span>
+                      </a>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Paso 2 - Elige tu carrera */}
+              <div className="bento p-6 text-center">
+                <div className="relative w-[60px] h-[60px] mb-4 mx-auto">
+                  <svg viewBox="0 0 60 60" className="w-full h-full">
+                    <circle cx="30" cy="30" r="28" fill="var(--lila)" />
+                  </svg>
+                  <span className="absolute inset-0 flex items-center justify-center text-white font-gabarito font-black text-xl">2</span>
+                </div>
+                <h3 className="text-lg font-black mb-2">Elige tu carrera</h3>
+                <p className="text-sm text-gray-500 leading-relaxed mb-4">Ya adentro → elige el subgrupo de tu área. Así solo recibes las oportunidades que te importan.</p>
+                <div className="relative">
+                  <button 
+                    onClick={() => setShowStep2Drop(!showStep2Drop)}
+                    className="w-full py-3 px-4 rounded-full font-bold text-sm text-white flex items-center justify-center gap-2"
+                    style={{ background: "var(--lila)" }}
+                  >
+                    Elegir mi área {showStep2Drop ? "▲" : "▼"}
+                  </button>
+                  {showStep2Drop && (
+                    <div className="mt-3 border-2 border-gray-200 rounded-2xl overflow-hidden bg-white">
+                      <a href="https://chat.whatsapp.com/CSy5PqWyXuNGca7gLKyhWe" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-3 hover:bg-gray-50 transition-colors border-b border-gray-100">
+                        <span>⚙️</span>
+                        <span className="font-bold text-sm">Ingeniería</span>
+                      </a>
+                      <a href="https://chat.whatsapp.com/Fh0QdKA6wUbJ6kKdCpfZF4" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-3 hover:bg-gray-50 transition-colors border-b border-gray-100">
+                        <span>💼</span>
+                        <span className="font-bold text-sm">Negocios</span>
+                      </a>
+                      <a href="https://chat.whatsapp.com/DupdfJig8NeHAE1Mz451vB" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-3 hover:bg-gray-50 transition-colors border-b border-gray-100">
+                        <span>🎨</span>
+                        <span className="font-bold text-sm">Estudios Creativos</span>
+                      </a>
+                      <a href="https://chat.whatsapp.com/Dl7FbQfRjQ6LLZf8SFSb9d" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-3 hover:bg-gray-50 transition-colors border-b border-gray-100">
+                        <span>🌍</span>
+                        <span className="font-bold text-sm">Ciencias Sociales</span>
+                      </a>
+                      <a href="https://chat.whatsapp.com/Kvh6DnT3LcJH02qFa1VjER" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-3 hover:bg-gray-50 transition-colors">
+                        <span>⛏️</span>
+                        <span className="font-bold text-sm">Web3</span>
+                      </a>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Paso 3 - Busca algo específico */}
+              <div className="bento p-6 text-center">
+                <div className="relative w-[60px] h-[60px] mb-4 mx-auto">
+                  <svg viewBox="0 0 60 60" className="w-full h-full">
+                    <circle cx="30" cy="30" r="28" fill="var(--teal)" />
+                  </svg>
+                  <span className="absolute inset-0 flex items-center justify-center text-white font-gabarito font-black text-xl">3</span>
+                </div>
+                <h3 className="text-lg font-black mb-2">Busca algo específico</h3>
+                <p className="text-sm text-gray-500 leading-relaxed mb-4">Escríbele al chat, dile qué buscas y te responde al momento con opciones personalizadas.</p>
+                <a 
+                  href="https://wa.me/522205414251" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-full py-3 px-4 rounded-full font-bold text-sm flex items-center justify-center gap-2 border-2"
+                  style={{ borderColor: "var(--teal)", color: "var(--teal)" }}
+                >
+                  💬 Abrir chat
+                </a>
+              </div>
+
+              {/* Paso 4 - Comparte con un amigo */}
+              <div className="bento p-6 text-center">
+                <div className="relative w-[60px] h-[60px] mb-4 mx-auto">
+                  <svg viewBox="0 0 60 60" className="w-full h-full">
+                    <circle cx="30" cy="30" r="28" fill="var(--nar)" />
+                  </svg>
+                  <span className="absolute inset-0 flex items-center justify-center text-white font-gabarito font-black text-xl">4</span>
+                </div>
+                <h3 className="text-lg font-black mb-2">Comparte con un amigo</h3>
+                <p className="text-sm text-gray-500 leading-relaxed mb-4">¿Ya lo viviste? Pásalo a alguien que lo necesite. Las mejores oportunidades se comparten.</p>
+                <button 
+                  onClick={() => setShowShareModal(true)}
+                  className="w-full py-3 px-4 rounded-full font-bold text-sm text-white flex items-center justify-center gap-2"
+                  style={{ background: "var(--nar)" }}
+                >
+                  Comparte con un amigo
+                </button>
+              </div>
             </div>
           </div>
         </section>
+
+        {/* ========== SHARE MODAL ========== */}
+        {showShareModal && (
+          <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={() => setShowShareModal(false)}>
+            <div className="bento p-8 max-w-md w-full" onClick={e => e.stopPropagation()}>
+              <div className="flex justify-between items-start mb-6">
+                <div>
+                  <h3 className="text-2xl font-black mb-1">Invita a quien quieras</h3>
+                  <p className="text-sm text-gray-500">Comparte Opportuni con tus amigos</p>
+                </div>
+                <button onClick={() => setShowShareModal(false)} className="text-2xl text-gray-400 hover:text-gray-600">×</button>
+              </div>
+              <div className="flex gap-2 mb-4">
+                <input 
+                  type="text" 
+                  value="https://opportuni.mx" 
+                  readOnly 
+                  className="flex-1 px-4 py-3 border-2 border-gray-200 rounded-xl bg-gray-50 text-sm"
+                />
+                <button 
+                  onClick={() => navigator.clipboard.writeText("https://opportuni.mx")}
+                  className="px-4 py-3 bg-gray-100 rounded-xl text-sm font-bold hover:bg-gray-200 transition-colors"
+                >
+                  Copiar
+                </button>
+              </div>
+              <button 
+                onClick={() => window.open("https://wa.me/?text=¡Mira esta comunidad de oportunidades! https://opportuni.mx", "_blank")}
+                className="w-full py-3 bg-green-500 text-white rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-green-600 transition-colors"
+              >
+                <span>📱</span> Compartir por WhatsApp
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* ========== SERVICIOS ========== */}
         <section id="servicios" className="py-20 px-4" style={{ background: "var(--cream2)" }}>
