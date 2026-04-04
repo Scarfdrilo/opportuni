@@ -423,62 +423,110 @@ export default function Home() {
 
             <div className="grid md:grid-cols-3 gap-6">
               {/* Review de CV */}
-              <a href="https://wa.me/522205414251?text=Hola!%20Quiero%20pedir%20mi%20Review%20de%20CV" target="_blank" rel="noopener noreferrer" className="bento-rosa p-0 overflow-hidden group cursor-pointer block">
-                <div className="p-5 rounded-t-bento-lg" style={{ background: "var(--rosa)" }}>
-                  <svg viewBox="0 0 200 180" fill="none" className="w-full">
-                    <defs><pattern id="sw1" width="40" height="20" patternUnits="userSpaceOnUse"><path d="M0 20C10 20 10 10 20 10C30 10 30 20 40 20" fill="none" stroke="rgba(255,255,255,.15)" strokeWidth="1.5"/></pattern></defs>
-                    <rect width="200" height="180" fill="url(#sw1)"/>
-                    <g transform="translate(40,30)"><rect x="0" y="0" width="120" height="120" rx="30" fill="rgba(255,255,255,.15)"/><text x="60" y="55" textAnchor="middle" fontFamily="Gabarito" fontSize="14" fill="rgba(255,255,255,.7)" fontWeight="700">tu cv</text><text x="60" y="85" textAnchor="middle" fontFamily="Gabarito" fontSize="36" fontWeight="900" fill="#fff">PRO</text></g>
+              <a href="https://wa.me/522205414251?text=Hola!%20Quiero%20pedir%20mi%20Review%20de%20CV" target="_blank" rel="noopener noreferrer" className="bento p-0 overflow-hidden group cursor-pointer block">
+                <div className="p-8 flex items-center justify-center" style={{ background: "var(--rosa)", minHeight: "180px" }}>
+                  <svg viewBox="0 0 120 140" fill="none" className="w-24">
+                    {/* Corona */}
+                    <g transform="translate(25, 0)">
+                      <path d="M5 30L20 10L35 25L50 10L65 30L60 35H10L5 30Z" fill="#FFD93D" stroke="#1a1a2e" strokeWidth="2"/>
+                      <circle cx="20" cy="10" r="4" fill="#FFD93D" stroke="#1a1a2e" strokeWidth="2"/>
+                      <circle cx="35" cy="5" r="4" fill="#FFD93D" stroke="#1a1a2e" strokeWidth="2"/>
+                      <circle cx="50" cy="10" r="4" fill="#FFD93D" stroke="#1a1a2e" strokeWidth="2"/>
+                    </g>
+                    {/* Documento */}
+                    <rect x="20" y="35" width="80" height="100" rx="8" fill="white" stroke="#1a1a2e" strokeWidth="3"/>
+                    {/* Líneas del documento */}
+                    <line x1="35" y1="55" x2="85" y2="55" stroke="#e0e0e0" strokeWidth="3" strokeLinecap="round"/>
+                    <line x1="35" y1="70" x2="85" y2="70" stroke="#e0e0e0" strokeWidth="3" strokeLinecap="round"/>
+                    <line x1="35" y1="85" x2="70" y2="85" stroke="#e0e0e0" strokeWidth="3" strokeLinecap="round"/>
+                    {/* Check verde */}
+                    <circle cx="60" cy="110" r="15" fill="#0ec4a9" stroke="#1a1a2e" strokeWidth="2"/>
+                    <path d="M52 110L57 115L68 104" stroke="white" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
                 </div>
-                <div className="p-7">
+                <div className="p-6">
                   <h3 className="text-xl font-black mb-2">Review de CV</h3>
-                  <p className="text-sm text-gray-500 mb-4">Sube tu CV y recibe feedback detallado para que destaque donde importa.</p>
+                  <p className="text-sm text-gray-500 mb-4">Tu CV optimizado para destacar donde importa.</p>
                   <div className="flex gap-2 mb-4">
-                    <span className="badge badge-rosa">PDF / Word</span>
+                    <span className="badge badge-rosa">PDF</span>
                     <span className="badge badge-rosa">Feedback</span>
                   </div>
-                  <span className="btn-rosa text-sm w-full text-center block">Revisar mi CV ✦</span>
+                  <span className="w-full py-3 px-4 rounded-full font-bold text-sm text-white flex items-center justify-center gap-2 border-2" style={{ background: "var(--rosa)", borderColor: "var(--dark)", boxShadow: "3px 3px 0 var(--dark)" }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    Pedir mi CV
+                  </span>
                 </div>
               </a>
 
               {/* Asesoría */}
-              <a href="https://wa.me/522205414251?text=Hola!%20Quiero%20agendar%20una%20Asesor%C3%ADa%201:1" target="_blank" rel="noopener noreferrer" className="bento-naranja p-0 overflow-hidden group cursor-pointer block">
-                <div className="p-5 rounded-t-bento-lg" style={{ background: "var(--nar)" }}>
-                  <svg viewBox="0 0 200 180" fill="none" className="w-full">
-                    <defs><pattern id="sw2" width="40" height="20" patternUnits="userSpaceOnUse"><path d="M0 20C10 20 10 10 20 10C30 10 30 20 40 20" fill="none" stroke="rgba(255,255,255,.15)" strokeWidth="1.5"/></pattern></defs>
-                    <rect width="200" height="180" fill="url(#sw2)"/>
-                    <g transform="translate(30,20)"><circle cx="70" cy="70" r="65" fill="rgba(255,255,255,.12)"/><text x="70" y="58" textAnchor="middle" fontFamily="Gabarito" fontSize="14" fill="rgba(0,0,0,.4)" fontWeight="700">asesoría</text><text x="70" y="90" textAnchor="middle" fontFamily="Gabarito" fontSize="36" fontWeight="900" fill="var(--dark)">1:1</text></g>
+              <a href="https://wa.me/522205414251?text=Hola!%20Quiero%20agendar%20una%20Asesor%C3%ADa%201:1" target="_blank" rel="noopener noreferrer" className="bento p-0 overflow-hidden group cursor-pointer block">
+                <div className="p-8 flex items-center justify-center" style={{ background: "var(--cream2)", minHeight: "180px" }}>
+                  <svg viewBox="0 0 140 120" fill="none" className="w-28">
+                    {/* Burbuja teal (arriba izq) */}
+                    <ellipse cx="45" cy="35" rx="35" ry="28" fill="#0ec4a9" stroke="#1a1a2e" strokeWidth="3"/>
+                    <circle cx="20" cy="55" r="6" fill="#0ec4a9" stroke="#1a1a2e" strokeWidth="2"/>
+                    <circle cx="12" cy="68" r="4" fill="#0ec4a9" stroke="#1a1a2e" strokeWidth="2"/>
+                    {/* Burbuja rosa (abajo der) */}
+                    <ellipse cx="95" cy="75" rx="35" ry="28" fill="var(--rosa)" stroke="#1a1a2e" strokeWidth="3"/>
+                    <circle cx="120" cy="55" r="6" fill="var(--rosa)" stroke="#1a1a2e" strokeWidth="2"/>
+                    <circle cx="128" cy="42" r="4" fill="var(--rosa)" stroke="#1a1a2e" strokeWidth="2"/>
+                    {/* Rayos */}
+                    <g transform="translate(60, 40)">
+                      <path d="M10 0L12 8L20 5L14 12L22 18L12 15L10 25L8 15L-2 18L6 12L0 5L8 8Z" fill="#7c5cfc" stroke="#1a1a2e" strokeWidth="1.5"/>
+                    </g>
+                    <g transform="translate(75, 55) scale(0.7)">
+                      <path d="M10 0L12 8L20 5L14 12L22 18L12 15L10 25L8 15L-2 18L6 12L0 5L8 8Z" fill="#7c5cfc" stroke="#1a1a2e" strokeWidth="1.5"/>
+                    </g>
                   </svg>
                 </div>
-                <div className="p-7">
+                <div className="p-6">
                   <h3 className="text-xl font-black mb-2">Asesoría 1:1</h3>
-                  <p className="text-sm text-gray-500 mb-4">Acompañamiento personalizado para aplicar a becas, vacantes o hacer tu plan de carrera.</p>
+                  <p className="text-sm text-gray-500 mb-4">Sesión personalizada para armar tu estrategia de carrera.</p>
                   <div className="flex gap-2 mb-4">
                     <span className="badge badge-naranja">Mentores</span>
                     <span className="badge badge-naranja">30 min</span>
                   </div>
-                  <span className="btn-primary text-sm w-full text-center block">Agendar sesión ✦</span>
+                  <span className="w-full py-3 px-4 rounded-full font-bold text-sm flex items-center justify-center gap-2 border-2" style={{ background: "var(--nar)", borderColor: "var(--dark)", boxShadow: "3px 3px 0 var(--dark)", color: "var(--dark)" }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    Agendar sesión
+                  </span>
                 </div>
               </a>
 
               {/* Chat */}
-              <a href="https://wa.me/522205414251?text=Hola!" target="_blank" rel="noopener noreferrer" className="bento-teal p-0 overflow-hidden group cursor-pointer block">
-                <div className="p-5 rounded-t-bento-lg" style={{ background: "var(--teal)" }}>
-                  <svg viewBox="0 0 200 180" fill="none" className="w-full">
-                    <defs><pattern id="sw3" width="40" height="20" patternUnits="userSpaceOnUse"><path d="M0 20C10 20 10 10 20 10C30 10 30 20 40 20" fill="none" stroke="rgba(255,255,255,.15)" strokeWidth="1.5"/></pattern></defs>
-                    <rect width="200" height="180" fill="url(#sw3)"/>
-                    <g transform="translate(40,25)"><ellipse cx="60" cy="55" rx="58" ry="52" fill="rgba(255,255,255,.12)"/><text x="60" y="58" textAnchor="middle" fontFamily="Gabarito" fontSize="14" fill="rgba(0,0,0,.4)" fontWeight="700">habla con</text><text x="60" y="90" textAnchor="middle" fontFamily="Gabarito" fontSize="30" fontWeight="900" fill="var(--dark)">🦊 CHAT</text></g>
+              <a href="https://wa.me/522205414251?text=Hola!" target="_blank" rel="noopener noreferrer" className="bento p-0 overflow-hidden group cursor-pointer block">
+                <div className="p-8 flex items-center justify-center" style={{ background: "var(--teal)", minHeight: "180px" }}>
+                  <svg viewBox="0 0 100 120" fill="none" className="w-20">
+                    {/* Antenas */}
+                    <line x1="30" y1="25" x2="30" y2="10" stroke="#1a1a2e" strokeWidth="3" strokeLinecap="round"/>
+                    <circle cx="30" cy="8" r="6" fill="var(--rosa)" stroke="#1a1a2e" strokeWidth="2"/>
+                    <line x1="70" y1="25" x2="70" y2="10" stroke="#1a1a2e" strokeWidth="3" strokeLinecap="round"/>
+                    <circle cx="70" cy="8" r="6" fill="var(--rosa)" stroke="#1a1a2e" strokeWidth="2"/>
+                    {/* Cabeza robot */}
+                    <rect x="15" y="25" width="70" height="70" rx="12" fill="white" stroke="#1a1a2e" strokeWidth="3"/>
+                    {/* Ojos */}
+                    <circle cx="38" cy="55" r="10" fill="var(--nar)" stroke="#1a1a2e" strokeWidth="2"/>
+                    <circle cx="62" cy="55" r="10" fill="var(--nar)" stroke="#1a1a2e" strokeWidth="2"/>
+                    <circle cx="40" cy="53" r="3" fill="white"/>
+                    <circle cx="64" cy="53" r="3" fill="white"/>
+                    {/* Boca sonriente */}
+                    <path d="M38 75C42 82 58 82 62 75" stroke="#1a1a2e" strokeWidth="3" fill="none" strokeLinecap="round"/>
+                    {/* Orejas/lados */}
+                    <rect x="5" y="45" width="10" height="25" rx="4" fill="white" stroke="#1a1a2e" strokeWidth="2"/>
+                    <rect x="85" y="45" width="10" height="25" rx="4" fill="white" stroke="#1a1a2e" strokeWidth="2"/>
                   </svg>
                 </div>
-                <div className="p-7">
+                <div className="p-6">
                   <h3 className="text-xl font-black mb-2">Chat con Opportuni</h3>
-                  <p className="text-sm text-gray-500 mb-4">Pregúntale lo que sea: becas, vacantes, programas, convocatorias.</p>
+                  <p className="text-sm text-gray-500 mb-4">Pregunta lo que sea. Becas, vacantes, programas en segundos.</p>
                   <div className="flex gap-2 mb-4">
                     <span className="badge badge-teal">Búsqueda web</span>
                     <span className="badge badge-teal">LATAM</span>
                   </div>
-                  <span className="btn-teal text-sm w-full text-center block">Hablar con Opportuni ✦</span>
+                  <span className="w-full py-3 px-4 rounded-full font-bold text-sm text-white flex items-center justify-center gap-2 border-2" style={{ background: "var(--teal)", borderColor: "var(--dark)", boxShadow: "3px 3px 0 var(--dark)" }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    Hablar por WhatsApp
+                  </span>
                 </div>
               </a>
             </div>
