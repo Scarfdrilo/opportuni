@@ -686,7 +686,7 @@ export default function Home() {
             </div>
           </div>
           <div className="max-w-[1140px] mx-auto mt-12 pt-6 border-t border-white/5 text-center">
-            <p className="text-sm text-gray-600">© {new Date().getFullYear()} Opportuni. Hecho con 💜 en LATAM.</p>
+            <p className="text-sm text-gray-600">© {new Date().getFullYear()} Opportuni. Hecho con <span className="text-white">♥</span> en LATAM.</p>
           </div>
         </footer>
       </main>
