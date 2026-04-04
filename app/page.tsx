@@ -590,21 +590,22 @@ export default function Home() {
               {faqs.map((faq, idx) => (
                 <div 
                   key={idx} 
-                  className="bg-white rounded-3xl border-2 overflow-hidden transition-all"
-                  style={{ borderColor: "var(--dark)", boxShadow: "3px 3px 0 var(--dark)" }}
+                  className="bento overflow-hidden"
                 >
                   <button 
                     onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
-                    className="w-full p-5 text-left flex justify-between items-start gap-4"
+                    className="w-full p-6 text-left flex justify-between items-center gap-4"
                   >
                     <span className="font-bold text-base">{faq.question}</span>
                     <span className="text-xl shrink-0 font-bold" style={{ color: "var(--rosa)" }}>
-                      ✕
+                      {openFaq === idx ? "✕" : "+"}
                     </span>
                   </button>
-                  <div className="px-5 pb-5 text-sm text-gray-600 leading-relaxed">
-                    {faq.answer}
-                  </div>
+                  {openFaq === idx && (
+                    <div className="px-6 pb-6 text-sm text-gray-600 leading-relaxed">
+                      {faq.answer}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
