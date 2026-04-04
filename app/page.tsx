@@ -333,8 +333,8 @@ export default function Home() {
                   href="https://wa.me/522205414251" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="w-full py-3 px-4 rounded-full font-bold text-sm flex items-center justify-center gap-2 border-2 transition-all hover:translate-y-[-2px] bg-white"
-                  style={{ borderColor: "var(--dark)", color: "var(--teal)", boxShadow: "3px 3px 0 var(--dark)" }}
+                  className="w-full py-3 px-4 rounded-full font-bold text-sm flex items-center justify-center gap-2 border-2 transition-all hover:translate-y-[-2px] text-white"
+                  style={{ background: "var(--teal)", borderColor: "var(--dark)", boxShadow: "3px 3px 0 var(--dark)" }}
                 >
                   💬 Abrir chat
                 </a>
