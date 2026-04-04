@@ -537,32 +537,42 @@ export default function Home() {
         <section id="testimonios" className="py-20 px-4" style={{ background: "var(--cream)" }}>
           <div className="max-w-[1140px] mx-auto">
             <h2 className="text-3xl md:text-4xl font-black text-center mb-14">
-              Ellos ya están un paso adelante. <span className="animate-twinkle inline-block" style={{ color: "var(--nar)" }}>✦</span>
+              Historias que <span className="font-playfair italic" style={{ color: "var(--rosa)" }}>nos mueven.</span> <span className="animate-twinkle inline-block" style={{ color: "var(--nar)" }}>✦</span>
             </h2>
 
             <div className="grid md:grid-cols-3 gap-6">
               {testimonios.map((t) => (
-                <div key={t.nombre} className="bento p-0 overflow-hidden">
-                  <div className="h-[5px]" style={{ background: t.color }} />
-                  <div className="p-7">
-                    <div className="flex gap-1 mb-4 text-opportuni-naranja">
-                      {"★★★★★".split("").map((s, i) => <span key={i}>{s}</span>)}
+                <div key={t.nombre} className="bento p-7">
+                  <div className="flex gap-1 mb-4" style={{ color: "var(--nar)" }}>
+                    {"★★★★★".split("").map((s, i) => <span key={i}>{s}</span>)}
+                  </div>
+                  <p className="font-playfair italic text-base leading-relaxed mb-6 text-gray-700">
+                    &ldquo;{t.texto}&rdquo;
+                  </p>
+                  <div className="flex items-center gap-3">
+                    <div 
+                      className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm border-2"
+                      style={{ background: t.color, borderColor: "var(--dark)", boxShadow: "2px 2px 0 var(--dark)" }}
+                    >
+                      {t.nombre[0]}
                     </div>
-                    <p className="font-playfair italic text-base leading-relaxed mb-6 text-gray-700">
-                      &ldquo;{t.texto}&rdquo;
-                    </p>
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm" style={{ background: "linear-gradient(135deg, var(--rosa), var(--nar))" }}>
-                        {t.nombre[0]}
-                      </div>
-                      <div>
-                        <p className="font-bold text-sm">{t.nombre}</p>
-                        <p className="text-xs text-gray-400 font-mono">{t.rol}</p>
-                      </div>
+                    <div>
+                      <p className="font-bold text-sm">{t.nombre}</p>
+                      <p className="text-xs text-gray-400">{t.rol}</p>
                     </div>
                   </div>
                 </div>
               ))}
+            </div>
+
+            {/* Flechas de navegación */}
+            <div className="flex justify-center gap-4 mt-10">
+              <button className="w-12 h-12 rounded-full border-2 flex items-center justify-center text-lg transition-all hover:translate-y-[-2px]" style={{ borderColor: "var(--dark)", boxShadow: "2px 2px 0 var(--dark)", background: "white" }}>
+                ←
+              </button>
+              <button className="w-12 h-12 rounded-full border-2 flex items-center justify-center text-lg transition-all hover:translate-y-[-2px]" style={{ borderColor: "var(--dark)", boxShadow: "2px 2px 0 var(--dark)", background: "white" }}>
+                →
+              </button>
             </div>
           </div>
         </section>
