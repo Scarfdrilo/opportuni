@@ -1,56 +1,130 @@
 "use client";
 
-import { ConnectButton, useAccesly } from "accesly";
 import Link from "next/link";
 import { useState } from "react";
 
 const testimonios = [
-  { nombre: "Valentina R.", texto: "Encontré la beca que me trajo a estudiar a Países Bajos gracias a que la compartieron en el grupo.", rol: "Beca Erasmus · Ingeniería", color: "var(--rosa)" },
-  { nombre: "Diego M.", texto: "Apliqué a una vacante de product manager que vi en el grupo. A la semana tenía entrevista en Nubank.", rol: "PM en fintech · Negocios", color: "var(--nar)" },
-  { nombre: "Mariana G.", texto: "El review de CV me ayudó un montón para el proceso de Google. Super recomendado.", rol: "SWE Intern · Creativos", color: "var(--lila)" },
+  { 
+    nombre: "Valentina R.", 
+    texto: "Encontré la beca que me trajo a estudiar a Países Bajos gracias a que la compartieron en el grupo.", 
+    rol: "Beca Erasmus · Ingeniería", 
+    color: "var(--rosa)" 
+  },
+  { 
+    nombre: "Diego M.", 
+    texto: "Apliqué a una vacante de product manager que vi en el grupo. A la semana tenía entrevista en Nubank.", 
+    rol: "PM en fintech · Negocios", 
+    color: "var(--nar)" 
+  },
+  { 
+    nombre: "Mariana G.", 
+    texto: "El review de CV me ayudó un montón para el proceso de Google. Super recomendado.", 
+    rol: "SWE Intern · Creativos", 
+    color: "var(--lila)" 
+  },
 ];
 
-const categorias = [
-  { label: "Ingeniería", color: "badge-rosa" },
-  { label: "Negocios", color: "badge-naranja" },
-  { label: "Estudios Creativos", color: "badge-lila" },
-  { label: "Ciencias Sociales", color: "badge-teal" },
-  { label: "Web3", color: "badge-rosa" },
+const faqs = [
+  {
+    question: "¿Qué es Opportuni?",
+    answer: "Somos una comunidad que conecta a jóvenes latinoamericanos con becas, vacantes, programas y oportunidades que normalmente no encuentras fácilmente. Todo gratis."
+  },
+  {
+    question: "¿Cómo funciona el grupo de WhatsApp?",
+    answer: "Te unes al grupo de tu país, eliges tu área de interés (Ingeniería, Negocios, Creativos, etc.) y empiezas a recibir oportunidades relevantes cada semana."
+  },
+  {
+    question: "¿Cuánto cuesta unirse?",
+    answer: "Unirte al grupo y recibir oportunidades es 100% gratis. Solo cobramos por servicios adicionales como el Review de CV ($300 MXN) y la Asesoría 1:1 ($300 MXN)."
+  },
+  {
+    question: "¿Qué incluye el Review de CV?",
+    answer: "Revisamos tu CV, te damos feedback detallado y te entregamos una versión mejorada editable en Canva. Todo en menos de 48 horas."
+  },
+  {
+    question: "¿Cómo es la Asesoría 1:1?",
+    answer: "Es una sesión de 30 minutos por Google Meet donde armamos juntos tu estrategia: cómo aplicar a becas, mejorar tu perfil, o definir tu plan de carrera."
+  },
 ];
 
-const getNameFromEmail = (email: string) => {
-  const name = email.split("@")[0].replace(/[._-]/g, " ");
-  return name.split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
-};
+const empresasLogos = [
+  { name: "ONU", src: "/logos/onu.png" },
+  { name: "Nubank", src: "/logos/nubank.png" },
+  { name: "L'Oréal", src: "/logos/loreal.png" },
+  { name: "Google", src: "/logos/google.png" },
+  { name: "Santander", src: "/logos/santander.png" },
+  { name: "BBVA", src: "/logos/bbva.png" },
+];
+
+const subgrupos = [
+  { emoji: "⚙️", label: "Ingeniería", link: "https://chat.whatsapp.com/CSy5PqWyXuNGca7gLKyhWe" },
+  { emoji: "💼", label: "Negocios", link: "https://chat.whatsapp.com/Fh0QdKA6wUbJ6kKdCpfZF4" },
+  { emoji: "🎨", label: "Estudios Creativos", link: "https://chat.whatsapp.com/DupdfJig8NeHAE1Mz451vB" },
+  { emoji: "🌎", label: "Ciencias Sociales", link: "https://chat.whatsapp.com/Dl7FbQfRjQ6LLZf8SFSb9d" },
+  { emoji: "⛏️", label: "Web3", link: "https://chat.whatsapp.com/Kvh6DnT3LcJH02qFa1VjER" },
+];
 
 export default function Home() {
-  const { wallet } = useAccesly();
-  const [showDrop, setShowDrop] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
+  const [showGroupDrop, setShowGroupDrop] = useState(false);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [copied, setCopied] = useState(false);
+
+  const shareUrl = "https://opportuni.mx";
+  
+  const handleCopy = () => {
+    navigator.clipboard.writeText(shareUrl);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleWhatsAppShare = () => {
+    window.open(`https://wa.me/?text=¡Mira esta comunidad de oportunidades! ${shareUrl}`, '_blank');
+  };
 
   return (
     <div className="min-h-screen" style={{ background: "var(--cream)" }}>
-      {/* ========== CONNECT BUTTON PORTAL (outside nav for modal z-index) ========== */}
-      <div className="connect-button-portal">
-        {wallet ? (
-          <div className="user-pill-wrapper">
-            <div className="user-pill">
-              <img src="/logo-opportuni.png" alt="" className="user-pill-avatar" />
-              <span>{getNameFromEmail(wallet.email)}</span>
+      
+      {/* ========== SHARE MODAL ========== */}
+      {showShareModal && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={() => setShowShareModal(false)}>
+          <div className="bento p-8 max-w-md w-full" onClick={e => e.stopPropagation()}>
+            <div className="flex justify-between items-start mb-6">
+              <div>
+                <h3 className="text-2xl font-black mb-1">Invita a quien quieras</h3>
+                <p className="text-sm text-gray-500">Comparte Opportuni con tus amigos</p>
+              </div>
+              <button onClick={() => setShowShareModal(false)} className="text-2xl text-gray-400 hover:text-gray-600">×</button>
             </div>
-            {/* Hidden ConnectButton for panel access */}
-            <div className="hidden-connect">
-              <ConnectButton />
+            
+            <div className="flex gap-2 mb-4">
+              <input 
+                type="text" 
+                value={shareUrl} 
+                readOnly 
+                className="flex-1 px-4 py-3 border-2 border-gray-200 rounded-xl bg-gray-50 text-sm"
+              />
+              <button 
+                onClick={handleCopy}
+                className="px-4 py-3 bg-gray-100 rounded-xl text-sm font-bold hover:bg-gray-200 transition-colors"
+              >
+                {copied ? "✓ Copiado" : "Copiar"}
+              </button>
             </div>
+            
+            <button 
+              onClick={handleWhatsAppShare}
+              className="w-full py-3 bg-green-500 text-white rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-green-600 transition-colors"
+            >
+              <span>📱</span> Compartir por WhatsApp
+            </button>
           </div>
-        ) : (
-          <ConnectButton />
-        )}
-      </div>
+        </div>
+      )}
 
       {/* ========== NAV ========== */}
       <nav className="nav-bento">
         <div className="flex items-center gap-[10px]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/logo-opportuni.png" alt="Opportuni" style={{ height: 40, width: "auto" }} />
           <span className="font-gabarito text-[22px] font-black text-opportuni-dark">Opportuni</span>
         </div>
@@ -58,14 +132,14 @@ export default function Home() {
           {[
             { href: "#como", label: "Cómo funciona" },
             { href: "#servicios", label: "Servicios" },
-            { href: "#testimonios", label: "Testimonios" },
+            { href: "#testimonios", label: "Historias" },
+            { href: "#faq", label: "FAQ" },
           ].map((l) => (
             <a key={l.href} href={l.href} className="text-sm font-semibold text-gray-500 hover:text-opportuni-rosa transition-colors">
               {l.label}
             </a>
           ))}
         </div>
-        {/* Placeholder for visual alignment */}
         <div style={{ width: 140 }} />
       </nav>
 
@@ -77,90 +151,74 @@ export default function Home() {
           <span className="absolute top-[60%] right-[10%] text-[18px] animate-float animation-delay-200 z-10 pointer-events-none" style={{ color: "var(--lila)" }}>✦</span>
           <span className="absolute top-[80%] left-[15%] text-[22px] animate-float animation-delay-600 z-10 pointer-events-none" style={{ color: "var(--rosa)" }}>✦</span>
 
-          <div className="relative z-10 max-w-[1140px] mx-auto w-full grid md:grid-cols-[1.15fr_0.85fr] gap-4 items-center">
-            {/* Left */}
-            <div className="animate-slide-up" style={{ padding: "clamp(32px,5vw,52px) clamp(32px,5vw,52px) clamp(32px,5vw,52px) 0" }}>
-              <div className="pill mb-6">
+          <div className="relative z-10 max-w-[1140px] mx-auto w-full text-center">
+            <div className="animate-slide-up max-w-3xl mx-auto">
+              <div className="pill mb-6 mx-auto w-fit">
                 <span className="dot" />
                 +200 NUEVAS CADA SEMANA
               </div>
 
-              <h1 className="text-4xl md:text-[clamp(36px,4.5vw,56px)] font-black leading-[1.1] mb-5">
-                Prueba las nuevas herramientas que{" "}
+              <h1 className="text-4xl md:text-[clamp(40px,5vw,64px)] font-black leading-[1.1] mb-6">
+                Becas, vacantes y programas{" "}
                 <span className="font-playfair italic" style={{ color: "var(--rosa)" }}>
-                  te acercan a tu próxima oportunidad.
+                  que nadie te había contado.
                 </span>
               </h1>
 
-              <p className="text-base md:text-lg text-gray-500 mb-8 max-w-lg leading-relaxed">
-                Becas, vacantes, retos y programas en un solo lugar, personalizados para ti.
+              <p className="text-base md:text-lg text-gray-500 mb-8 max-w-xl mx-auto leading-relaxed">
+                La comunidad que conecta a jóvenes latinoamericanos con oportunidades reales. Gratis.
               </p>
 
-              <div className="flex flex-wrap gap-3 mb-6">
-                <Link href="/convocatorias" className="btn-primary">Ver convocatorias ✦</Link>
+              <div className="flex flex-wrap gap-3 justify-center mb-8">
                 <div className="relative">
-                  <button onClick={() => setShowDrop(!showDrop)} className="btn-secondary">
-                    Unirme al grupo ▾
+                  <button onClick={() => setShowGroupDrop(!showGroupDrop)} className="btn-primary">
+                    Unirme al grupo ✦
                   </button>
-                  {showDrop && (
-                    <div className="absolute top-full mt-2 left-0 bento p-3 space-y-2 min-w-[200px] z-20">
-                      <a href="https://chat.whatsapp.com/Iz07jRuw4WDE0uZgpvdGGm" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 p-2 rounded-xl hover:bg-opportuni-cream transition-colors">
-                        <span>🇲🇽</span> <span className="font-bold text-sm">México</span> <span className="text-xs text-gray-400 ml-auto">+8K</span>
+                  {showGroupDrop && (
+                    <div className="absolute top-full mt-2 left-1/2 -translate-x-1/2 bento p-3 space-y-2 min-w-[220px] z-20">
+                      <a href="https://chat.whatsapp.com/LqwA94ukn1O2laee8WP9tN" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 p-3 rounded-xl hover:bg-opportuni-cream transition-colors">
+                        <span className="text-xl">🇲🇽</span> 
+                        <span className="font-bold text-sm">México</span> 
+                        <span className="text-xs text-gray-400 ml-auto">+8K</span>
                       </a>
-                      <a href="https://chat.whatsapp.com/JsVEfmT8Iiv1R1fZWVqqdf" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 p-2 rounded-xl hover:bg-opportuni-cream transition-colors">
-                        <span>🇨🇴</span> <span className="font-bold text-sm">Colombia</span> <span className="text-xs text-gray-400 ml-auto">+1.5K</span>
+                      <a href="https://chat.whatsapp.com/JsVEfmT8Iiv1R1fZWVqqdf" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 p-3 rounded-xl hover:bg-opportuni-cream transition-colors">
+                        <span className="text-xl">🇨🇴</span> 
+                        <span className="font-bold text-sm">Colombia</span> 
+                        <span className="text-xs text-gray-400 ml-auto">+1.5K</span>
                       </a>
                     </div>
                   )}
                 </div>
-              </div>
-
-              <div className="flex flex-wrap gap-2">
-                {categorias.map((c) => (
-                  <span key={c.label} className={`badge ${c.color}`}>{c.label}</span>
-                ))}
-              </div>
-            </div>
-
-            {/* Right — Badge Panel Art */}
-            <div className="hidden md:block animate-slide-in-right">
-              <div className="bento p-5 transition-all hover:translate-x-[-3px] hover:translate-y-[-3px]" style={{ background: "var(--cream2)", boxShadow: "6px 6px 0 var(--dark)" }}>
-                <svg viewBox="0 0 340 300" fill="none" className="w-full">
-                  <defs><pattern id="scallop" width="40" height="20" patternUnits="userSpaceOnUse"><path d="M0 20C10 20 10 10 20 10C30 10 30 20 40 20" fill="none" stroke="rgba(255,255,255,.08)" strokeWidth="1.5"/></pattern></defs>
-                  <rect width="340" height="300" fill="url(#scallop)"/>
-                  {/* BECAS sticker */}
-                  <g transform="translate(15,15) rotate(-5)"><ellipse cx="52" cy="35" rx="52" ry="35" fill="var(--rosa)"/><text x="52" y="32" textAnchor="middle" fontFamily="Gabarito" fontSize="15" fontWeight="900" fill="#fff" letterSpacing="1">BECAS</text><text x="52" y="48" textAnchor="middle" fontFamily="Playfair Display" fontSize="10" fill="rgba(255,255,255,.7)" fontStyle="italic">latam</text></g>
-                  {/* GOOGLE pill */}
-                  <g transform="translate(140,5) rotate(3)"><rect width="130" height="48" rx="24" fill="var(--nar)"/><text x="65" y="31" textAnchor="middle" fontFamily="Gabarito" fontSize="18" fontWeight="900" fill="var(--dark)" letterSpacing="1">GOOGLE</text></g>
-                  {/* +8K circle */}
-                  <g transform="translate(215,68)"><circle cx="44" cy="44" r="42" fill="var(--teal)"/><text x="44" y="38" textAnchor="middle" fontFamily="Gabarito" fontSize="11" fontWeight="900" fill="#fff">+8,000</text><text x="44" y="54" textAnchor="middle" fontFamily="Playfair Display" fontSize="9" fill="rgba(255,255,255,.7)" fontStyle="italic">jóvenes</text></g>
-                  {/* MX · COL half-circle */}
-                  <g transform="translate(8,105)"><path d="M0 45A45 45 0 0 1 90 45Z" fill="var(--lila)"/><text x="45" y="38" textAnchor="middle" fontFamily="Gabarito" fontSize="10" fontWeight="900" fill="#fff" letterSpacing="1">MX · COL</text></g>
-                  {/* Fox blob */}
-                  <g transform="translate(105,100)"><ellipse cx="42" cy="38" rx="42" ry="38" fill="var(--rosa)" opacity=".15"/><text x="42" y="44" textAnchor="middle" fontSize="36">🦊</text></g>
-                  {/* VACANTES pill */}
-                  <g transform="translate(190,140) rotate(4)"><rect width="120" height="50" rx="25" fill="var(--nar)" opacity=".9"/><text x="60" y="25" textAnchor="middle" fontFamily="Playfair Display" fontSize="8" fill="var(--dark)" fontStyle="italic" opacity=".6">verified</text><text x="60" y="40" textAnchor="middle" fontFamily="Gabarito" fontSize="13" fontWeight="900" fill="var(--dark)">VACANTES</text></g>
-                  {/* Smiley */}
-                  <g transform="translate(20,190) rotate(6)"><circle cx="32" cy="32" r="30" fill="var(--nar)"/><circle cx="22" cy="26" r="4" fill="var(--dark)"/><circle cx="42" cy="26" r="4" fill="var(--dark)"/><path d="M18 38C22 46 42 46 46 38" stroke="var(--dark)" strokeWidth="3" fill="none" strokeLinecap="round"/></g>
-                  {/* STELLAR pill */}
-                  <g transform="translate(100,210) rotate(-3)"><rect width="108" height="42" rx="21" fill="var(--lila)"/><text x="54" y="27" textAnchor="middle" fontFamily="Gabarito" fontSize="14" fontWeight="900" fill="#fff" letterSpacing="2">STELLAR</text></g>
-                  {/* WEB3 blob */}
-                  <g transform="translate(232,215)"><ellipse cx="32" cy="28" rx="32" ry="28" fill="var(--teal)"/><text x="32" y="34" textAnchor="middle" fontFamily="Gabarito" fontSize="11" fontWeight="900" fill="var(--dark)">WEB3</text></g>
-                  {/* Sparkles */}
-                  <g fill="var(--nar)"><path d="M285 20l3-8 3 8 8 3-8 3-3 8-3-8-8-3z"/><path d="M180 185l2-5 2 5 5 2-5 2-2 5-2-5-5-2z" fill="var(--rosa)"/><path d="M310 260l2-6 2 6 6 2-6 2-2 6-2-6-6-2z" fill="#fff" opacity=".3"/></g>
-                  <g fill="#fff" opacity=".2"><path d="M130 170l2-5 2 5 5 2-5 2-2 5-2-5-5-2z"/><path d="M70 160l1.5-4 1.5 4 4 1.5-4 1.5-1.5 4-1.5-4-4-1.5z"/></g>
-                </svg>
+                <a href="https://wa.me/522205414251" target="_blank" rel="noopener noreferrer" className="btn-secondary">
+                  Hablar con Opportuni 🦊
+                </a>
               </div>
             </div>
           </div>
         </section>
 
-        {/* ========== SCALLOP (hero → dark) ========== */}
+        {/* ========== MARQUEE - LOGOS ========== */}
+        <section className="py-8 overflow-hidden" style={{ background: "var(--cream2)" }}>
+          <p className="text-center text-sm text-gray-400 mb-4 font-mono uppercase tracking-wider">Oportunidades de empresas como</p>
+          <div className="flex animate-scroll whitespace-nowrap">
+            {[...Array(3)].map((_, idx) => (
+              <div key={idx} className="flex items-center gap-12 shrink-0 px-6">
+                {empresasLogos.map((logo) => (
+                  <div key={`${logo.name}-${idx}`} className="flex items-center gap-2 opacity-40 hover:opacity-100 transition-opacity">
+                    <span className="font-gabarito font-bold text-lg text-gray-600">{logo.name}</span>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ========== SCALLOP (cream → dark) ========== */}
         <svg viewBox="0 0 1200 30" fill="var(--dark)" preserveAspectRatio="none" style={{ display: "block", width: "100%" }}>
           <path d="M0 30C50 30 50 0 100 0C150 0 150 30 200 30C250 30 250 0 300 0C350 0 350 30 400 30C450 30 450 0 500 0C550 0 550 30 600 30C650 30 650 0 700 0C750 0 750 30 800 30C850 30 850 0 900 0C950 0 950 30 1000 30C1050 30 1050 0 1100 0C1150 0 1150 30 1200 30V0H0Z" />
         </svg>
 
-        {/* ========== MARQUEE ========== */}
+        {/* ========== MARQUEE - OPORTUNIDADES ========== */}
         <section style={{ background: "var(--dark)", overflow: "hidden", padding: "20px 0" }}>
           <div className="flex animate-scroll whitespace-nowrap">
             {[...Array(2)].map((_, idx) => (
@@ -181,30 +239,53 @@ export default function Home() {
           <path d="M0 30C50 30 50 0 100 0C150 0 150 30 200 30C250 30 250 0 300 0C350 0 350 30 400 30C450 30 450 0 500 0C550 0 550 30 600 30C650 30 650 0 700 0C750 0 750 30 800 30C850 30 850 0 900 0C950 0 950 30 1000 30C1050 30 1050 0 1100 0C1150 0 1150 30 1200 30V0H0Z" />
         </svg>
 
-        {/* ========== COMO FUNCIONA ========== */}
+        {/* ========== COMO FUNCIONA - 4 PASOS ========== */}
         <section id="como" className="py-20 px-4" style={{ background: "var(--cream)" }}>
           <div className="max-w-[1140px] mx-auto">
-            <h2 className="text-3xl md:text-4xl font-black text-center mb-14">
-              Tres pasos. Cero excusas. <span className="animate-twinkle inline-block" style={{ color: "var(--nar)" }}>✦</span>
+            <h2 className="text-3xl md:text-4xl font-black text-center mb-4">
+              Cuatro pasos. Cero complicaciones. <span className="animate-twinkle inline-block" style={{ color: "var(--nar)" }}>✦</span>
             </h2>
+            <p className="text-center text-gray-500 mb-14 max-w-lg mx-auto">
+              Unirte a la comunidad es gratis y toma menos de un minuto.
+            </p>
 
-            <div className="grid md:grid-cols-3 gap-6">
+            <div className="grid md:grid-cols-4 gap-6">
               {[
-                { n: "1", title: "Únete al grupo", desc: "Escoge México o Colombia y entra al grupo de WhatsApp. 10 segundos.", color: "var(--rosa)" },
-                { n: "2", title: "Escoge tu subcomunidad", desc: "Ingeniería, Negocios, Creativos, Ciencias Sociales o Web3.", color: "var(--lila)" },
-                { n: "3", title: "Recibe y crece", desc: "Oportunidades en tu teléfono cada semana. Conecta con la comunidad.", color: "var(--nar)" },
+                { n: "1", title: "Únete al grupo", desc: "Escoge México o Colombia y entra al grupo de WhatsApp.", color: "var(--rosa)", emoji: "📱" },
+                { n: "2", title: "Elige tu carrera", desc: "Ingeniería, Negocios, Creativos, Ciencias Sociales o Web3.", color: "var(--lila)", emoji: "🎯" },
+                { n: "3", title: "Abre el chat", desc: "Habla con Opportuni para recibir recomendaciones personalizadas.", color: "var(--teal)", emoji: "💬" },
+                { n: "4", title: "Comparte", desc: "Invita a tus amigos y crece junto con la comunidad.", color: "var(--nar)", emoji: "🚀" },
               ].map((step) => (
-                <div key={step.n} className="bento p-7 group">
-                  <div className="relative w-[70px] h-[70px] mb-5">
-                    <svg viewBox="0 0 70 70" className="w-full h-full">
-                      <ellipse cx="35" cy="35" rx="34" ry="33" fill={step.color} />
+                <div key={step.n} className="bento p-6 group text-center">
+                  <div className="relative w-[60px] h-[60px] mb-4 mx-auto">
+                    <svg viewBox="0 0 60 60" className="w-full h-full">
+                      <circle cx="30" cy="30" rx="28" fill={step.color} />
                     </svg>
-                    <span className="absolute inset-0 flex items-center justify-center text-white font-gabarito font-black text-2xl">{step.n}</span>
+                    <span className="absolute inset-0 flex items-center justify-center text-2xl">{step.emoji}</span>
                   </div>
-                  <h3 className="text-xl font-black mb-2">{step.title}</h3>
+                  <div className="text-xs font-mono text-gray-400 mb-2">PASO {step.n}</div>
+                  <h3 className="text-lg font-black mb-2">{step.title}</h3>
                   <p className="text-sm text-gray-500 leading-relaxed">{step.desc}</p>
                 </div>
               ))}
+            </div>
+
+            {/* Subgrupos */}
+            <div className="mt-12 text-center">
+              <p className="text-sm text-gray-500 mb-4">Únete directo a tu área:</p>
+              <div className="flex flex-wrap gap-2 justify-center">
+                {subgrupos.map((sub) => (
+                  <a 
+                    key={sub.label} 
+                    href={sub.link} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="badge badge-rosa hover:scale-105 transition-transform"
+                  >
+                    {sub.emoji} {sub.label}
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
         </section>
@@ -222,19 +303,18 @@ export default function Home() {
             <div className="grid md:grid-cols-3 gap-6">
               {/* Review de CV */}
               <Link href="/cv" className="bento-rosa p-0 overflow-hidden group cursor-pointer block">
-                <div className="p-5 rounded-t-bento-lg" style={{ background: "var(--rosa)" }}>
-                  <svg viewBox="0 0 200 180" fill="none" className="w-full">
-                    <defs><pattern id="sw1" width="40" height="20" patternUnits="userSpaceOnUse"><path d="M0 20C10 20 10 10 20 10C30 10 30 20 40 20" fill="none" stroke="rgba(255,255,255,.15)" strokeWidth="1.5"/></pattern></defs>
-                    <rect width="200" height="180" fill="url(#sw1)"/>
-                    <g transform="translate(40,30)"><rect x="0" y="0" width="120" height="120" rx="30" fill="rgba(255,255,255,.15)"/><text x="60" y="55" textAnchor="middle" fontFamily="Gabarito" fontSize="14" fill="rgba(255,255,255,.7)" fontWeight="700">tu cv</text><text x="60" y="85" textAnchor="middle" fontFamily="Gabarito" fontSize="36" fontWeight="900" fill="#fff">PRO</text></g>
-                  </svg>
+                <div className="p-8 rounded-t-[26px] flex items-center justify-center h-[180px]" style={{ background: "var(--rosa)" }}>
+                  <div className="text-center">
+                    <div className="text-5xl mb-2">📄</div>
+                    <div className="text-white/80 text-sm font-mono">$300 MXN</div>
+                  </div>
                 </div>
                 <div className="p-7">
                   <h3 className="text-xl font-black mb-2">Review de CV</h3>
-                  <p className="text-sm text-gray-500 mb-4">Sube tu CV y recibe feedback detallado para que destaque donde importa.</p>
+                  <p className="text-sm text-gray-500 mb-4">Sube tu CV y recibe feedback detallado + versión mejorada editable en Canva.</p>
                   <div className="flex gap-2 mb-4">
-                    <span className="badge badge-rosa">PDF / Word</span>
-                    <span className="badge badge-rosa">Feedback</span>
+                    <span className="badge badge-rosa">48 hrs</span>
+                    <span className="badge badge-rosa">Canva</span>
                   </div>
                   <span className="btn-rosa text-sm w-full text-center block">Revisar mi CV ✦</span>
                 </div>
@@ -242,18 +322,17 @@ export default function Home() {
 
               {/* Asesoría */}
               <Link href="/cv/asesoria" className="bento-naranja p-0 overflow-hidden group cursor-pointer block">
-                <div className="p-5 rounded-t-bento-lg" style={{ background: "var(--nar)" }}>
-                  <svg viewBox="0 0 200 180" fill="none" className="w-full">
-                    <defs><pattern id="sw2" width="40" height="20" patternUnits="userSpaceOnUse"><path d="M0 20C10 20 10 10 20 10C30 10 30 20 40 20" fill="none" stroke="rgba(255,255,255,.15)" strokeWidth="1.5"/></pattern></defs>
-                    <rect width="200" height="180" fill="url(#sw2)"/>
-                    <g transform="translate(30,20)"><circle cx="70" cy="70" r="65" fill="rgba(255,255,255,.12)"/><text x="70" y="58" textAnchor="middle" fontFamily="Gabarito" fontSize="14" fill="rgba(0,0,0,.4)" fontWeight="700">asesoría</text><text x="70" y="90" textAnchor="middle" fontFamily="Gabarito" fontSize="36" fontWeight="900" fill="var(--dark)">1:1</text></g>
-                  </svg>
+                <div className="p-8 rounded-t-[26px] flex items-center justify-center h-[180px]" style={{ background: "var(--nar)" }}>
+                  <div className="text-center">
+                    <div className="text-5xl mb-2">👥</div>
+                    <div className="text-white/80 text-sm font-mono">$300 MXN</div>
+                  </div>
                 </div>
                 <div className="p-7">
                   <h3 className="text-xl font-black mb-2">Asesoría 1:1</h3>
-                  <p className="text-sm text-gray-500 mb-4">Acompañamiento personalizado para aplicar a becas, vacantes o hacer tu plan de carrera.</p>
+                  <p className="text-sm text-gray-500 mb-4">Sesión de 30 min por Google Meet para armar tu estrategia de aplicación.</p>
                   <div className="flex gap-2 mb-4">
-                    <span className="badge badge-naranja">Mentores</span>
+                    <span className="badge badge-naranja">Google Meet</span>
                     <span className="badge badge-naranja">30 min</span>
                   </div>
                   <span className="btn-primary text-sm w-full text-center block">Agendar sesión ✦</span>
@@ -261,24 +340,23 @@ export default function Home() {
               </Link>
 
               {/* Chat */}
-              <Link href="/chat" className="bento-teal p-0 overflow-hidden group cursor-pointer block">
-                <div className="p-5 rounded-t-bento-lg" style={{ background: "var(--teal)" }}>
-                  <svg viewBox="0 0 200 180" fill="none" className="w-full">
-                    <defs><pattern id="sw3" width="40" height="20" patternUnits="userSpaceOnUse"><path d="M0 20C10 20 10 10 20 10C30 10 30 20 40 20" fill="none" stroke="rgba(255,255,255,.15)" strokeWidth="1.5"/></pattern></defs>
-                    <rect width="200" height="180" fill="url(#sw3)"/>
-                    <g transform="translate(40,25)"><ellipse cx="60" cy="55" rx="58" ry="52" fill="rgba(255,255,255,.12)"/><text x="60" y="58" textAnchor="middle" fontFamily="Gabarito" fontSize="14" fill="rgba(0,0,0,.4)" fontWeight="700">habla con</text><text x="60" y="90" textAnchor="middle" fontFamily="Gabarito" fontSize="30" fontWeight="900" fill="var(--dark)">🦊 CHAT</text></g>
-                  </svg>
+              <a href="https://wa.me/522205414251" target="_blank" rel="noopener noreferrer" className="bento-teal p-0 overflow-hidden group cursor-pointer block">
+                <div className="p-8 rounded-t-[26px] flex items-center justify-center h-[180px]" style={{ background: "var(--teal)" }}>
+                  <div className="text-center">
+                    <div className="text-5xl mb-2">🦊</div>
+                    <div className="text-white/80 text-sm font-mono">GRATIS</div>
+                  </div>
                 </div>
                 <div className="p-7">
                   <h3 className="text-xl font-black mb-2">Chat con Opportuni</h3>
-                  <p className="text-sm text-gray-500 mb-4">Pregúntale lo que sea: becas, vacantes, programas, convocatorias.</p>
+                  <p className="text-sm text-gray-500 mb-4">Pregúntale lo que sea sobre becas, vacantes y programas en LATAM.</p>
                   <div className="flex gap-2 mb-4">
-                    <span className="badge badge-teal">Búsqueda web</span>
-                    <span className="badge badge-teal">LATAM</span>
+                    <span className="badge badge-teal">WhatsApp</span>
+                    <span className="badge badge-teal">24/7</span>
                   </div>
-                  <span className="btn-teal text-sm w-full text-center block">Hablar con Opportuni ✦</span>
+                  <span className="btn-teal text-sm w-full text-center block">Hablar ahora ✦</span>
                 </div>
-              </Link>
+              </a>
             </div>
           </div>
         </section>
@@ -286,9 +364,12 @@ export default function Home() {
         {/* ========== TESTIMONIOS ========== */}
         <section id="testimonios" className="py-20 px-4" style={{ background: "var(--cream)" }}>
           <div className="max-w-[1140px] mx-auto">
-            <h2 className="text-3xl md:text-4xl font-black text-center mb-14">
-              Ellos ya están un paso adelante. <span className="animate-twinkle inline-block" style={{ color: "var(--nar)" }}>✦</span>
+            <h2 className="text-3xl md:text-4xl font-black text-center mb-4">
+              Historias que nos mueven <span className="animate-twinkle inline-block" style={{ color: "var(--nar)" }}>✦</span>
             </h2>
+            <p className="text-center text-gray-500 mb-14 max-w-lg mx-auto">
+              Miles de jóvenes ya encontraron su siguiente oportunidad. Aquí algunas de sus historias.
+            </p>
 
             <div className="grid md:grid-cols-3 gap-6">
               {testimonios.map((t) => (
@@ -302,7 +383,7 @@ export default function Home() {
                       &ldquo;{t.texto}&rdquo;
                     </p>
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm" style={{ background: "linear-gradient(135deg, var(--rosa), var(--nar))" }}>
+                      <div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm" style={{ background: `linear-gradient(135deg, ${t.color}, var(--nar))` }}>
                         {t.nombre[0]}
                       </div>
                       <div>
@@ -311,6 +392,39 @@ export default function Home() {
                       </div>
                     </div>
                   </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ========== FAQ ========== */}
+        <section id="faq" className="py-20 px-4" style={{ background: "var(--cream2)" }}>
+          <div className="max-w-[800px] mx-auto">
+            <h2 className="text-3xl md:text-4xl font-black text-center mb-4">
+              Preguntas frecuentes <span className="animate-twinkle inline-block" style={{ color: "var(--nar)" }}>✦</span>
+            </h2>
+            <p className="text-center text-gray-500 mb-14">
+              ¿Tienes dudas? Aquí las respuestas más comunes.
+            </p>
+
+            <div className="space-y-4">
+              {faqs.map((faq, idx) => (
+                <div key={idx} className="bento overflow-hidden">
+                  <button 
+                    onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
+                    className="w-full p-6 text-left flex justify-between items-center gap-4"
+                  >
+                    <span className="font-bold text-base">{faq.question}</span>
+                    <span className="text-2xl text-gray-400 shrink-0">
+                      {openFaq === idx ? "−" : "+"}
+                    </span>
+                  </button>
+                  {openFaq === idx && (
+                    <div className="px-6 pb-6 text-sm text-gray-600 leading-relaxed">
+                      {faq.answer}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -332,14 +446,22 @@ export default function Home() {
             <p className="cta-sub">
               Miles de jóvenes en LATAM ya están conectados. Tú solo necesitas unirte.
             </p>
-            <a
-              href="https://chat.whatsapp.com/Iz07jRuw4WDE0uZgpvdGGm"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-cta"
-            >
-              Unirme ahora ✦
-            </a>
+            <div className="flex flex-wrap gap-4 justify-center">
+              <a
+                href="https://chat.whatsapp.com/LqwA94ukn1O2laee8WP9tN"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-cta"
+              >
+                Unirme ahora ✦
+              </a>
+              <button
+                onClick={() => setShowShareModal(true)}
+                className="btn-cta-secondary"
+              >
+                Compartir con un amigo
+              </button>
+            </div>
           </div>
         </section>
 
@@ -355,7 +477,6 @@ export default function Home() {
           <div className="max-w-[1140px] mx-auto grid md:grid-cols-[2fr_1fr_1fr_1fr] gap-10">
             <div>
               <div className="flex items-center gap-[10px] mb-3">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src="/logo-opportuni.png" alt="Opportuni" style={{ height: 30, width: "auto", filter: "brightness(10)" }} />
                 <span className="font-gabarito text-xl font-black">Opportuni</span>
               </div>
@@ -367,20 +488,22 @@ export default function Home() {
                 <a href="#como" className="block text-sm text-gray-500 hover:text-white transition-colors">Cómo funciona</a>
                 <a href="#servicios" className="block text-sm text-gray-500 hover:text-white transition-colors">Servicios</a>
                 <a href="#testimonios" className="block text-sm text-gray-500 hover:text-white transition-colors">Historias</a>
+                <a href="#faq" className="block text-sm text-gray-500 hover:text-white transition-colors">FAQ</a>
               </div>
             </div>
             <div>
               <p className="font-mono text-xs font-bold uppercase mb-4" style={{ color: "var(--nar)" }}>Comunidad</p>
               <div className="space-y-2">
-                <a href="https://chat.whatsapp.com/Iz07jRuw4WDE0uZgpvdGGm" target="_blank" rel="noopener noreferrer" className="block text-sm text-gray-500 hover:text-white transition-colors">México</a>
-                <a href="https://chat.whatsapp.com/JsVEfmT8Iiv1R1fZWVqqdf" target="_blank" rel="noopener noreferrer" className="block text-sm text-gray-500 hover:text-white transition-colors">Colombia</a>
+                <a href="https://chat.whatsapp.com/LqwA94ukn1O2laee8WP9tN" target="_blank" rel="noopener noreferrer" className="block text-sm text-gray-500 hover:text-white transition-colors">🇲🇽 México</a>
+                <a href="https://chat.whatsapp.com/JsVEfmT8Iiv1R1fZWVqqdf" target="_blank" rel="noopener noreferrer" className="block text-sm text-gray-500 hover:text-white transition-colors">🇨🇴 Colombia</a>
+                <a href="https://wa.me/522205414251" target="_blank" rel="noopener noreferrer" className="block text-sm text-gray-500 hover:text-white transition-colors">💬 Chat directo</a>
               </div>
             </div>
             <div>
               <p className="font-mono text-xs font-bold uppercase mb-4" style={{ color: "var(--nar)" }}>Síguenos</p>
               <div className="space-y-2">
-                <a href="https://www.instagram.com/opportuni__mx/" target="_blank" rel="noopener noreferrer" className="block text-sm text-gray-500 hover:text-white transition-colors">Instagram</a>
-                <a href="https://www.linkedin.com/company/opportunn/?viewAsMember=true" target="_blank" rel="noopener noreferrer" className="block text-sm text-gray-500 hover:text-white transition-colors">LinkedIn</a>
+                <a href="https://instagram.com/opportuni__mx" target="_blank" rel="noopener noreferrer" className="block text-sm text-gray-500 hover:text-white transition-colors">Instagram</a>
+                <a href="https://www.linkedin.com/company/opportunn/" target="_blank" rel="noopener noreferrer" className="block text-sm text-gray-500 hover:text-white transition-colors">LinkedIn</a>
               </div>
             </div>
           </div>
