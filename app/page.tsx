@@ -139,12 +139,6 @@ export default function Home() {
                   )}
                 </div>
               </div>
-
-              <div className="flex flex-wrap gap-2">
-                {categorias.map((c) => (
-                  <span key={c.label} className={`badge ${c.color}`}>{c.label}</span>
-                ))}
-              </div>
             </div>
 
             {/* Right — Badge Panel Art */}
