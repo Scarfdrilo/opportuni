@@ -615,25 +615,24 @@ export default function Home() {
         {/* ========== CTA ========== */}
         <section className="cta-section px-4">
           {/* Floating sparkles */}
-          <span className="absolute text-[32px] pointer-events-none animate-float" style={{ top: "20%", left: "10%", color: "var(--dark)" }}>✦</span>
-          <span className="absolute text-[20px] pointer-events-none animate-float" style={{ top: "30%", right: "15%", color: "#fff", animationDelay: "1s" }}>✦</span>
-          <span className="absolute text-[24px] pointer-events-none animate-float" style={{ bottom: "20%", left: "20%", color: "#fff", animationDelay: "2s" }}>✦</span>
+          <span className="absolute text-[32px] pointer-events-none animate-float" style={{ top: "15%", left: "8%", color: "var(--dark)" }}>✦</span>
+          <span className="absolute text-[18px] pointer-events-none animate-float" style={{ top: "25%", right: "12%", color: "var(--nar)", animationDelay: "0.5s" }}>✦</span>
+          <span className="absolute text-[24px] pointer-events-none animate-float" style={{ bottom: "30%", left: "15%", color: "var(--nar)", animationDelay: "1s" }}>✦</span>
+          <span className="absolute text-[20px] pointer-events-none animate-float" style={{ bottom: "20%", right: "20%", color: "var(--dark)", animationDelay: "1.5s" }}>✦</span>
 
-          <div className="max-w-2xl mx-auto">
-            <h2 className="cta-title">
-              ¿Listo para encontrar<br/>
-              <em>tu siguiente oportunidad?</em>
+          <div className="max-w-2xl mx-auto text-center">
+            <h2 className="text-3xl md:text-5xl font-black leading-tight mb-8">
+              <span style={{ color: "var(--dark)" }}>¿Listo para encontrar</span><br/>
+              <span className="font-playfair italic text-white">tu siguiente oportunidad?</span>
             </h2>
-            <p className="cta-sub">
-              Miles de jóvenes en LATAM ya están conectados. Tú solo necesitas unirte.
-            </p>
             <a
-              href="https://chat.whatsapp.com/Iz07jRuw4WDE0uZgpvdGGm"
+              href="https://wa.me/522205414251"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-cta"
+              className="inline-flex items-center px-8 py-4 rounded-full font-bold text-base border-2 transition-all hover:translate-y-[-2px]"
+              style={{ background: "var(--dark)", color: "white", borderColor: "var(--dark)", boxShadow: "4px 4px 0 rgba(0,0,0,0.2)" }}
             >
-              Unirme ahora ✦
+              Buscar oportunidades ✦
             </a>
           </div>
         </section>
@@ -654,7 +653,7 @@ export default function Home() {
                 <img src="/logo-opportuni.png" alt="Opportuni" style={{ height: 30, width: "auto", filter: "brightness(10)" }} />
                 <span className="font-gabarito text-xl font-black">Opportuni</span>
               </div>
-              <p className="text-sm text-gray-500 max-w-xs">Conectamos a jóvenes talentosos con oportunidades en LATAM.</p>
+              <p className="text-sm text-gray-500 max-w-xs">Conectamos jóvenes con becas, vacantes, retos y oportunidades en toda LATAM. ✦</p>
             </div>
             <div>
               <p className="font-mono text-xs font-bold uppercase mb-4" style={{ color: "var(--nar)" }}>Producto</p>
@@ -662,25 +661,32 @@ export default function Home() {
                 <a href="#como" className="block text-sm text-gray-500 hover:text-white transition-colors">Cómo funciona</a>
                 <a href="#servicios" className="block text-sm text-gray-500 hover:text-white transition-colors">Servicios</a>
                 <a href="#testimonios" className="block text-sm text-gray-500 hover:text-white transition-colors">Historias</a>
+                <a href="#faq" className="block text-sm text-gray-500 hover:text-white transition-colors">FAQ</a>
               </div>
             </div>
             <div>
               <p className="font-mono text-xs font-bold uppercase mb-4" style={{ color: "var(--nar)" }}>Comunidad</p>
               <div className="space-y-2">
-                <a href="https://chat.whatsapp.com/Iz07jRuw4WDE0uZgpvdGGm" target="_blank" rel="noopener noreferrer" className="block text-sm text-gray-500 hover:text-white transition-colors">México</a>
+                <a href="https://chat.whatsapp.com/LqwA94ukn1O2laee8WP9tN" target="_blank" rel="noopener noreferrer" className="block text-sm text-gray-500 hover:text-white transition-colors">México</a>
                 <a href="https://chat.whatsapp.com/JsVEfmT8Iiv1R1fZWVqqdf" target="_blank" rel="noopener noreferrer" className="block text-sm text-gray-500 hover:text-white transition-colors">Colombia</a>
               </div>
             </div>
             <div>
               <p className="font-mono text-xs font-bold uppercase mb-4" style={{ color: "var(--nar)" }}>Síguenos</p>
-              <div className="space-y-2">
-                <a href="https://www.instagram.com/opportuni__mx/" target="_blank" rel="noopener noreferrer" className="block text-sm text-gray-500 hover:text-white transition-colors">Instagram</a>
-                <a href="https://www.linkedin.com/company/opportunn/?viewAsMember=true" target="_blank" rel="noopener noreferrer" className="block text-sm text-gray-500 hover:text-white transition-colors">LinkedIn</a>
+              <div className="space-y-3">
+                <a href="https://www.instagram.com/opportuni__mx/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="opacity-50"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                  Instagram
+                </a>
+                <a href="https://www.linkedin.com/company/opportunn/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="opacity-50"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                  LinkedIn
+                </a>
               </div>
             </div>
           </div>
           <div className="max-w-[1140px] mx-auto mt-12 pt-6 border-t border-white/5 text-center">
-            <p className="text-sm text-gray-600">© {new Date().getFullYear()} Opportuni. Hecho con 🦊 en LATAM.</p>
+            <p className="text-sm text-gray-600">© {new Date().getFullYear()} Opportuni. Hecho con 💜 en LATAM.</p>
           </div>
         </footer>
       </main>
