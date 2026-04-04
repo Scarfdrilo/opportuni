@@ -183,17 +183,41 @@ export default function Home() {
           <path d="M0 30C50 30 50 0 100 0C150 0 150 30 200 30C250 30 250 0 300 0C350 0 350 30 400 30C450 30 450 0 500 0C550 0 550 30 600 30C650 30 650 0 700 0C750 0 750 30 800 30C850 30 850 0 900 0C950 0 950 30 1000 30C1050 30 1050 0 1100 0C1150 0 1150 30 1200 30V0H0Z" />
         </svg>
 
-        {/* ========== MARQUEE ========== */}
-        <section style={{ background: "var(--dark)", overflow: "hidden", padding: "20px 0" }}>
-          <div className="flex animate-scroll whitespace-nowrap">
-            {[...Array(2)].map((_, idx) => (
-              <div key={idx} className="flex items-center gap-8 shrink-0 pr-8">
-                {["BECAS", "VACANTES", "RETOS", "PROGRAMAS", "STARTUPS", "WEB3", "TECH", "INGENIERÍA", "NEGOCIOS", "CREATIVOS"].map((w) => (
-                  <span key={`${w}-${idx}`} className="flex items-center gap-4">
-                    <span className="font-gabarito font-black text-white/20 text-xl uppercase tracking-widest">{w}</span>
-                    <span style={{ color: "var(--nar)" }}>✦</span>
+        {/* ========== MARQUEE - TWO ROWS ========== */}
+        <section style={{ background: "var(--dark)", overflow: "hidden", padding: "16px 0" }}>
+          {/* Row 1: Company logos */}
+          <p className="text-center text-xs text-white/40 mb-3 font-mono uppercase tracking-wider">Oportunidades de empresas como</p>
+          <div className="flex animate-scroll whitespace-nowrap mb-4">
+            {[...Array(3)].map((_, idx) => (
+              <div key={idx} className="flex items-center gap-10 shrink-0 px-5">
+                {["ONU", "NUBANK", "L'ORÉAL", "TEC DE MONTERREY", "STELLAR", "MCKINSEY", "AMAZON", "SANTANDER", "MICROSOFT"].map((company) => (
+                  <span key={`${company}-${idx}`} className="flex items-center gap-3">
+                    <span style={{ color: "var(--teal)" }}>●</span>
+                    <span className="font-gabarito font-bold text-white/70 text-sm uppercase tracking-wide">{company}</span>
                   </span>
                 ))}
+              </div>
+            ))}
+          </div>
+          {/* Row 2: Opportunities carousel */}
+          <div className="flex animate-scroll-reverse whitespace-nowrap">
+            {[...Array(2)].map((_, idx) => (
+              <div key={idx} className="flex items-center gap-6 shrink-0 px-3">
+                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold" style={{ background: "var(--rosa)", color: "white" }}>
+                  BECA <span className="opacity-70">Santander — Maestría en Europa 🇪🇺</span>
+                </span>
+                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold" style={{ background: "var(--nar)", color: "var(--dark)" }}>
+                  VACANTE <span className="opacity-70">Meta Junior PM — Remoto LATAM 🎨</span>
+                </span>
+                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold" style={{ background: "var(--teal)", color: "white" }}>
+                  CURSO <span className="opacity-70">McKinsey Forward — Gratis, 8 semanas 🎓</span>
+                </span>
+                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold" style={{ background: "white", color: "var(--dark)" }}>
+                  BECA <span className="opacity-70">L'Oréal UNESCO — Mujeres en Ciencia ⚔️</span>
+                </span>
+                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold" style={{ background: "var(--lila)", color: "white" }}>
+                  PROGRAMA <span className="opacity-70">Google Career Certificates 💻</span>
+                </span>
               </div>
             ))}
           </div>
@@ -228,8 +252,8 @@ export default function Home() {
                 <div className="relative">
                   <button 
                     onClick={() => setShowStep1Drop(!showStep1Drop)}
-                    className="w-full py-3 px-4 rounded-full font-bold text-sm text-white flex items-center justify-center gap-2"
-                    style={{ background: "var(--rosa)" }}
+                    className="w-full py-3 px-4 rounded-full font-bold text-sm text-white flex items-center justify-center gap-2 border-2 transition-all hover:translate-y-[-2px]"
+                    style={{ background: "var(--rosa)", borderColor: "var(--dark)", boxShadow: "3px 3px 0 var(--dark)" }}
                   >
                     Unirme al grupo {showStep1Drop ? "▲" : "▼"}
                   </button>
@@ -263,8 +287,8 @@ export default function Home() {
                 <div className="relative">
                   <button 
                     onClick={() => setShowStep2Drop(!showStep2Drop)}
-                    className="w-full py-3 px-4 rounded-full font-bold text-sm text-white flex items-center justify-center gap-2"
-                    style={{ background: "var(--lila)" }}
+                    className="w-full py-3 px-4 rounded-full font-bold text-sm text-white flex items-center justify-center gap-2 border-2 transition-all hover:translate-y-[-2px]"
+                    style={{ background: "var(--lila)", borderColor: "var(--dark)", boxShadow: "3px 3px 0 var(--dark)" }}
                   >
                     Elegir mi área {showStep2Drop ? "▲" : "▼"}
                   </button>
@@ -309,8 +333,8 @@ export default function Home() {
                   href="https://wa.me/522205414251" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="w-full py-3 px-4 rounded-full font-bold text-sm flex items-center justify-center gap-2 border-2"
-                  style={{ borderColor: "var(--teal)", color: "var(--teal)" }}
+                  className="w-full py-3 px-4 rounded-full font-bold text-sm flex items-center justify-center gap-2 border-2 transition-all hover:translate-y-[-2px] bg-white"
+                  style={{ borderColor: "var(--dark)", color: "var(--teal)", boxShadow: "3px 3px 0 var(--dark)" }}
                 >
                   💬 Abrir chat
                 </a>
@@ -328,8 +352,8 @@ export default function Home() {
                 <p className="text-sm text-gray-500 leading-relaxed mb-4">¿Ya lo viviste? Pásalo a alguien que lo necesite. Las mejores oportunidades se comparten.</p>
                 <button 
                   onClick={() => setShowShareModal(true)}
-                  className="w-full py-3 px-4 rounded-full font-bold text-sm text-white flex items-center justify-center gap-2"
-                  style={{ background: "var(--nar)" }}
+                  className="w-full py-3 px-4 rounded-full font-bold text-sm text-white flex items-center justify-center gap-2 border-2 transition-all hover:translate-y-[-2px]"
+                  style={{ background: "var(--nar)", borderColor: "var(--dark)", boxShadow: "3px 3px 0 var(--dark)" }}
                 >
                   Comparte con un amigo
                 </button>

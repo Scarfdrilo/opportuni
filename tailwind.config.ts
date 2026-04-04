@@ -93,6 +93,10 @@ const config: Config = {
           "0%": { transform: "translateX(0)" },
           "100%": { transform: "translateX(-50%)" },
         },
+        "scroll-reverse": {
+          "0%": { transform: "translateX(-50%)" },
+          "100%": { transform: "translateX(0)" },
+        },
       },
       animation: {
         float: "float 6s ease-in-out infinite",
@@ -103,6 +107,7 @@ const config: Config = {
         "slide-in-right": "slide-in-right 0.6s ease-out forwards",
         bop: "bop 1.4s ease-in-out infinite",
         scroll: "scroll 25s linear infinite",
+        "scroll-reverse": "scroll-reverse 30s linear infinite",
         "pulse-soft": "pulse 3s ease-in-out infinite",
       },
     },
