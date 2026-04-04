@@ -20,24 +20,24 @@ const categorias = [
 
 const faqs = [
   {
-    question: "¿Qué es Opportuni?",
-    answer: "Somos una comunidad que conecta a jóvenes latinoamericanos con becas, vacantes, programas y oportunidades que normalmente no encuentras fácilmente. Todo gratis."
+    question: "¿Opportuni es gratis?",
+    answer: "Sí. El grupo de WhatsApp y el chat son gratis. Solo CV Builder y Asesoría 1:1 tienen costo de $300 MXN cada uno."
   },
   {
-    question: "¿Cómo funciona el grupo de WhatsApp?",
-    answer: "Te unes al grupo de tu país, eliges tu área de interés (Ingeniería, Negocios, Creativos, etc.) y empiezas a recibir oportunidades relevantes cada semana."
+    question: "¿Qué tipo de oportunidades encuentro?",
+    answer: "Becas, vacantes, programas de aceleración, retos y cursos gratuitos para jóvenes en México y Colombia."
   },
   {
-    question: "¿Cuánto cuesta unirse?",
-    answer: "Unirte al grupo y recibir oportunidades es 100% gratis. Solo cobramos por servicios adicionales como el Review de CV ($300 MXN) y la Asesoría 1:1 ($300 MXN)."
+    question: "¿Cómo funciona el chat?",
+    answer: "Le describes qué buscas y te filtra las mejores opciones en segundos. Como un asistente personal de oportunidades."
   },
   {
-    question: "¿Qué incluye el Review de CV?",
-    answer: "Revisamos tu CV, te damos feedback detallado y te entregamos una versión mejorada editable en Canva. Todo en menos de 48 horas."
+    question: "¿Para quién es Opportuni?",
+    answer: "Estudiantes y recién egresados en México y Colombia. No importa tu carrera ni tu universidad."
   },
   {
-    question: "¿Cómo es la Asesoría 1:1?",
-    answer: "Es una sesión de 30 minutos por Google Meet donde armamos juntos tu estrategia: cómo aplicar a becas, mejorar tu perfil, o definir tu plan de carrera."
+    question: "¿Las oportunidades están verificadas?",
+    answer: "Sí. Todo lo que publicamos es legítimo, con fuente oficial y fecha vigente. Tu tiempo vale."
   },
 ];
 
@@ -580,30 +580,31 @@ export default function Home() {
         {/* ========== FAQ ========== */}
         <section id="faq" className="py-20 px-4" style={{ background: "var(--cream2)" }}>
           <div className="max-w-[800px] mx-auto">
-            <h2 className="text-3xl md:text-4xl font-black text-center mb-4">
-              Preguntas frecuentes <span className="animate-twinkle inline-block" style={{ color: "var(--nar)" }}>✦</span>
+            <h2 className="text-3xl md:text-4xl font-black text-center mb-12">
+              Preguntas<br/>
+              <span className="font-playfair italic" style={{ color: "var(--rosa)" }}>frecuentes.</span>{" "}
+              <span className="animate-twinkle inline-block" style={{ color: "var(--nar)" }}>✦</span>
             </h2>
-            <p className="text-center text-gray-500 mb-14">
-              ¿Tienes dudas? Aquí las respuestas más comunes.
-            </p>
 
             <div className="space-y-4">
               {faqs.map((faq, idx) => (
-                <div key={idx} className="bento overflow-hidden">
+                <div 
+                  key={idx} 
+                  className="bg-white rounded-3xl border-2 overflow-hidden transition-all"
+                  style={{ borderColor: "var(--dark)", boxShadow: "3px 3px 0 var(--dark)" }}
+                >
                   <button 
                     onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
-                    className="w-full p-6 text-left flex justify-between items-center gap-4"
+                    className="w-full p-5 text-left flex justify-between items-start gap-4"
                   >
                     <span className="font-bold text-base">{faq.question}</span>
-                    <span className="text-2xl text-gray-400 shrink-0">
-                      {openFaq === idx ? "−" : "+"}
+                    <span className="text-xl shrink-0 font-bold" style={{ color: "var(--rosa)" }}>
+                      ✕
                     </span>
                   </button>
-                  {openFaq === idx && (
-                    <div className="px-6 pb-6 text-sm text-gray-600 leading-relaxed">
-                      {faq.answer}
-                    </div>
-                  )}
+                  <div className="px-5 pb-5 text-sm text-gray-600 leading-relaxed">
+                    {faq.answer}
+                  </div>
                 </div>
               ))}
             </div>
