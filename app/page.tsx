@@ -423,7 +423,7 @@ export default function Home() {
 
             <div className="grid md:grid-cols-3 gap-6">
               {/* Review de CV */}
-              <Link href="/cv" className="bento-rosa p-0 overflow-hidden group cursor-pointer block">
+              <a href="https://wa.me/522205414251?text=Hola!%20Quiero%20pedir%20mi%20Review%20de%20CV" target="_blank" rel="noopener noreferrer" className="bento-rosa p-0 overflow-hidden group cursor-pointer block">
                 <div className="p-5 rounded-t-bento-lg" style={{ background: "var(--rosa)" }}>
                   <svg viewBox="0 0 200 180" fill="none" className="w-full">
                     <defs><pattern id="sw1" width="40" height="20" patternUnits="userSpaceOnUse"><path d="M0 20C10 20 10 10 20 10C30 10 30 20 40 20" fill="none" stroke="rgba(255,255,255,.15)" strokeWidth="1.5"/></pattern></defs>
@@ -440,10 +440,10 @@ export default function Home() {
                   </div>
                   <span className="btn-rosa text-sm w-full text-center block">Revisar mi CV ✦</span>
                 </div>
-              </Link>
+              </a>
 
               {/* Asesoría */}
-              <Link href="/cv/asesoria" className="bento-naranja p-0 overflow-hidden group cursor-pointer block">
+              <a href="https://wa.me/522205414251?text=Hola!%20Quiero%20agendar%20una%20Asesor%C3%ADa%201:1" target="_blank" rel="noopener noreferrer" className="bento-naranja p-0 overflow-hidden group cursor-pointer block">
                 <div className="p-5 rounded-t-bento-lg" style={{ background: "var(--nar)" }}>
                   <svg viewBox="0 0 200 180" fill="none" className="w-full">
                     <defs><pattern id="sw2" width="40" height="20" patternUnits="userSpaceOnUse"><path d="M0 20C10 20 10 10 20 10C30 10 30 20 40 20" fill="none" stroke="rgba(255,255,255,.15)" strokeWidth="1.5"/></pattern></defs>
@@ -460,10 +460,10 @@ export default function Home() {
                   </div>
                   <span className="btn-primary text-sm w-full text-center block">Agendar sesión ✦</span>
                 </div>
-              </Link>
+              </a>
 
               {/* Chat */}
-              <Link href="/chat" className="bento-teal p-0 overflow-hidden group cursor-pointer block">
+              <a href="https://wa.me/522205414251?text=Hola!" target="_blank" rel="noopener noreferrer" className="bento-teal p-0 overflow-hidden group cursor-pointer block">
                 <div className="p-5 rounded-t-bento-lg" style={{ background: "var(--teal)" }}>
                   <svg viewBox="0 0 200 180" fill="none" className="w-full">
                     <defs><pattern id="sw3" width="40" height="20" patternUnits="userSpaceOnUse"><path d="M0 20C10 20 10 10 20 10C30 10 30 20 40 20" fill="none" stroke="rgba(255,255,255,.15)" strokeWidth="1.5"/></pattern></defs>
@@ -480,7 +480,7 @@ export default function Home() {
                   </div>
                   <span className="btn-teal text-sm w-full text-center block">Hablar con Opportuni ✦</span>
                 </div>
-              </Link>
+              </a>
             </div>
           </div>
         </section>
