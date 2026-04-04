@@ -111,7 +111,7 @@ export default function Home() {
               </div>
 
               <h1 className="text-4xl md:text-[clamp(36px,4.5vw,56px)] font-black leading-[1.1] mb-5">
-                Becas, vacantes y programas{" "}
+                Becas, vacantes y programas<br/>
                 <span className="font-playfair italic" style={{ color: "var(--rosa)" }}>
                   que nadie te había contado.
                 </span>
