@@ -21,6 +21,39 @@
   --bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
+/* ===== Accesly kit theming — map the SDK's design tokens to Opportuni's
+   palette so <WalletHome>, <BalanceCard>, <MovementsList> and the flows blend
+   in. (useBranding() also sets --accesly-primary / --accesly-secondary from
+   the dashboard at runtime; those already resolve to rosa/naranja.) ===== */
+:root {
+  --accesly-primary: #e3216d;
+  --accesly-primary-ink: #e3216d;
+  --accesly-primary-soft: rgba(227, 33, 109, 0.12);
+  --accesly-secondary: #f89b0e;
+  --accesly-accent: #0ec4a9;
+  --accesly-grad: linear-gradient(135deg, #e3216d 0%, #f89b0e 100%);
+  --grad: linear-gradient(135deg, #e3216d 0%, #f89b0e 100%);
+
+  --accesly-text: #1a1a2e;
+  --accesly-ink: #1a1a2e;
+  --ink: #1a1a2e;
+  --accesly-muted: #6b6b76;
+  --ink2: #6b6b76;
+  --accesly-muted2: #9e95a7;
+  --ink3: #9e95a7;
+
+  --accesly-card: #ffffff;
+  --card: #ffffff;
+  --accesly-card2: #faf0e2;
+  --card2: #faf0e2;
+
+  --accesly-border: rgba(26, 26, 46, 0.18);
+  --accesly-line: rgba(26, 26, 46, 0.12);
+  --line: rgba(26, 26, 46, 0.12);
+  --accesly-danger: #ef4444;
+  --accesly-success: #0ec4a9;
+}
+
 ::selection {
   background: #e3216d;
   color: white;
@@ -473,71 +506,8 @@ iframe[src*="accesly"] {
   z-index: 1000;
 }
 
-/* ===== Accesly ConnectButton Custom Styling (Vianney bento style) ===== */
-.connect-button-portal button,
-.connect-button-portal [class*="connect"] {
-  font-family: Gabarito, var(--font-body), system-ui, sans-serif !important;
-  font-size: 14px !important;
-  font-weight: 700 !important;
-  padding: 12px 24px !important;
-  border-radius: 9999px !important;
-  white-space: nowrap !important;
-  min-width: 140px !important;
-  border: 2.5px solid var(--dark) !important;
-  background: var(--rosa) !important;
-  color: white !important;
-  box-shadow: 2px 2px 0 var(--dark) !important;
-  transition: all 0.2s ease !important;
-  cursor: pointer !important;
-}
-
-.connect-button-portal button:hover,
-.connect-button-portal [class*="connect"]:hover {
-  transform: translate(-1px, -1px) !important;
-  box-shadow: 3px 3px 0 var(--dark) !important;
-}
-
-/* When connected - show pill style */
-.connect-button-portal [class*="wallet"],
-.connect-button-portal [class*="address"],
-.connect-button-portal [class*="connected"] {
-  font-family: Gabarito, var(--font-body), system-ui, sans-serif !important;
-  font-size: 13px !important;
-  font-weight: 600 !important;
-  padding: 8px 16px !important;
-  border-radius: 9999px !important;
-  border: 2.5px solid var(--dark) !important;
-  background: var(--cream) !important;
-  color: var(--dark) !important;
-  box-shadow: 2px 2px 0 var(--dark) !important;
-}
-
-/* ===== ConnectButton Text Override ===== */
-/* ONLY the main connect button - first direct child */
-.connect-button-portal > div > button,
-.connect-button-portal > button {
-  font-size: 0 !important;
-  position: relative !important;
-}
-
-.connect-button-portal > div > button > *,
-.connect-button-portal > button > * {
-  visibility: hidden !important;
-}
-
-.connect-button-portal > div > button::after,
-.connect-button-portal > button::after {
-  content: "Iniciar sesión" !important;
-  visibility: visible !important;
-  font-size: 14px !important;
-  font-weight: 700 !important;
-  position: absolute !important;
-  inset: 0 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  color: white !important;
-}
+/* The portal button now carries its own inline styles (Accesly SDK v2 — no
+   more <ConnectButton>), so the old skinning/relabel hacks were removed. */
 
 /* ===== Accesly Panel Bento Style ===== */
 [data-accesly-panel],

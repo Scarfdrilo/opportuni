@@ -1,8 +1,14 @@
 "use client";
 
-import { ConnectButton, useAccesly } from "accesly";
+import { useAccesly } from "@accesly/react";
 import Link from "next/link";
 import { useState } from "react";
+import WalletModal from "./wallet-modal";
+import PayModal, { type ServiceKey } from "./pay-modal";
+import CvUploadModal from "./cv-upload-modal";
+import AsesoriaModal from "./asesoria-modal";
+
+const paidKey = (svc: ServiceKey) => `opportuni_paid_${svc}`;
 
 const testimonios = [
   { nombre: "Valentina R.", texto: "Encontré la beca que me trajo a estudiar a Países Bajos gracias a que la compartieron en el grupo.", rol: "Beca Erasmus · Ingeniería", color: "var(--rosa)" },
@@ -21,7 +27,7 @@ const categorias = [
 const faqs = [
   {
     question: "¿Opportuni es gratis?",
-    answer: "Sí. El grupo de WhatsApp y el chat son gratis. Solo CV Builder y Asesoría 1:1 tienen costo de $300 MXN cada uno."
+    answer: "Sí. El grupo de WhatsApp y el chat son gratis. El CV Builder cuesta $150 MXN y la Asesoría 1:1 $300 MXN."
   },
   {
     question: "¿Qué tipo de oportunidades encuentro?",
@@ -41,36 +47,110 @@ const faqs = [
   },
 ];
 
-const getNameFromEmail = (email: string) => {
-  const name = email.split("@")[0].replace(/[._-]/g, " ");
-  return name.split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+const displayName = (username: string | null) => {
+  if (!username) return "Mi cuenta";
+  const base = username.includes("@") ? username.split("@")[0] : username;
+  return base.replace(/[._-]/g, " ").split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
 };
 
 export default function Home() {
-  const { wallet } = useAccesly();
+  const { auth } = useAccesly();
+  const loggedIn = auth.status === "authenticated";
   const [showDrop, setShowDrop] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [showStep1Drop, setShowStep1Drop] = useState(false);
   const [showStep2Drop, setShowStep2Drop] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
+  const [showWallet, setShowWallet] = useState(false);
+  const [payService, setPayService] = useState<ServiceKey | null>(null);
+  const [postPay, setPostPay] = useState<ServiceKey | null>(null);
+
+  // Service CTA: login-gate → if already paid open the post-pay flow, else pay.
+  const handleService = (svc: ServiceKey) => {
+    if (!loggedIn) {
+      auth.signInWithGoogle();
+      return;
+    }
+    if (typeof window !== "undefined" && localStorage.getItem(paidKey(svc))) {
+      setPostPay(svc);
+      return;
+    }
+    setPayService(svc);
+  };
+
+  const handlePaid = (svc: ServiceKey) => {
+    if (typeof window !== "undefined") localStorage.setItem(paidKey(svc), "1");
+    setPayService(null);
+    setPostPay(svc); // #4: post-pago solo se abre tras pagar
+  };
 
   return (
     <div className="min-h-screen" style={{ background: "var(--cream)" }}>
       {/* ========== CONNECT BUTTON PORTAL (outside nav for modal z-index) ========== */}
       <div className="connect-button-portal">
-        {wallet ? (
-          <div className="user-pill-wrapper">
-            <div className="user-pill">
+        {loggedIn ? (
+          <div className="user-pill-wrapper" style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <button
+              onClick={() => setShowWallet(true)}
+              className="user-pill"
+              title="Abrir mi wallet"
+              style={{ cursor: "pointer" }}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/logo-opportuni.png" alt="" className="user-pill-avatar" />
-              <span>{getNameFromEmail(wallet.email)}</span>
-            </div>
-            {/* Hidden ConnectButton for panel access */}
-            <div className="hidden-connect">
-              <ConnectButton />
-            </div>
+              <span>{displayName(auth.username)}</span>
+            </button>
+            <button
+              onClick={() => auth.signOut()}
+              title="Cerrar sesión"
+              aria-label="Cerrar sesión"
+              style={{
+                width: 34,
+                height: 34,
+                borderRadius: "50%",
+                border: "2.5px solid var(--dark)",
+                background: "var(--cream)",
+                boxShadow: "2px 2px 0 var(--dark)",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--dark)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                <polyline points="16 17 21 12 16 7" />
+                <line x1="21" y1="12" x2="9" y2="12" />
+              </svg>
+            </button>
           </div>
         ) : (
-          <ConnectButton />
+          <button
+            onClick={() => auth.signInWithGoogle()}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "0.55rem",
+              padding: "0.7rem 1.4rem",
+              background: "linear-gradient(135deg, var(--rosa) 0%, var(--nar) 100%)",
+              color: "#ffffff",
+              border: "2.5px solid var(--dark)",
+              borderRadius: "9999px",
+              fontSize: "0.95rem",
+              fontWeight: 700,
+              cursor: "pointer",
+              whiteSpace: "nowrap",
+              transition: "transform 0.15s, box-shadow 0.15s",
+              boxShadow: "3px 3px 0 var(--dark)",
+              fontFamily: "Gabarito, var(--font-body), system-ui, sans-serif",
+            }}
+          >
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+              <path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2.5" />
+              <path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4" />
+            </svg>
+            Iniciar sesión
+          </button>
         )}
       </div>
 
@@ -423,7 +503,7 @@ export default function Home() {
 
             <div className="grid md:grid-cols-3 gap-6">
               {/* Review de CV */}
-              <a href="https://wa.me/522205414251?text=Hola!%20Quiero%20pedir%20mi%20Review%20de%20CV" target="_blank" rel="noopener noreferrer" className="bento p-0 overflow-hidden group cursor-pointer block">
+              <button type="button" onClick={() => handleService("cv")} className="bento p-0 overflow-hidden group cursor-pointer block w-full text-left">
                 <div className="p-8 flex items-center justify-center" style={{ background: "var(--rosa)", minHeight: "180px" }}>
                   <svg viewBox="0 0 120 140" fill="none" className="w-24">
                     {/* Corona */}
@@ -456,10 +536,10 @@ export default function Home() {
                     Pedir mi CV
                   </span>
                 </div>
-              </a>
+              </button>
 
               {/* Asesoría */}
-              <a href="https://wa.me/522205414251?text=Hola!%20Quiero%20agendar%20una%20Asesor%C3%ADa%201:1" target="_blank" rel="noopener noreferrer" className="bento p-0 overflow-hidden group cursor-pointer block">
+              <button type="button" onClick={() => handleService("asesoria")} className="bento p-0 overflow-hidden group cursor-pointer block w-full text-left">
                 <div className="p-8 flex items-center justify-center" style={{ background: "var(--cream2)", minHeight: "180px" }}>
                   <svg viewBox="0 0 140 120" fill="none" className="w-28">
                     {/* Burbuja teal (arriba izq) */}
@@ -491,7 +571,7 @@ export default function Home() {
                     Agendar sesión
                   </span>
                 </div>
-              </a>
+              </button>
 
               {/* Chat */}
               <a href="https://wa.me/522205414251?text=Hola!" target="_blank" rel="noopener noreferrer" className="bento p-0 overflow-hidden group cursor-pointer block">
@@ -691,6 +771,19 @@ export default function Home() {
         </footer>
       </main>
 
+      {showWallet && <WalletModal onClose={() => setShowWallet(false)} />}
+
+      {payService && (
+        <PayModal
+          service={payService}
+          onClose={() => setPayService(null)}
+          onPaid={handlePaid}
+          onNeedWallet={() => setShowWallet(true)}
+        />
+      )}
+
+      {postPay === "cv" && <CvUploadModal onClose={() => setPostPay(null)} />}
+      {postPay === "asesoria" && <AsesoriaModal onClose={() => setPostPay(null)} />}
     </div>
   );
 }

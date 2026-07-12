@@ -2,17 +2,19 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useAccesly } from "accesly";
+import { useAccesly } from "@accesly/react";
 
-const getNameFromEmail = (email: string) => {
-  const name = email.split("@")[0].replace(/[._-]/g, " ");
-  return name.split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+const displayName = (username: string | null) => {
+  if (!username) return "Mi cuenta";
+  const base = username.includes("@") ? username.split("@")[0] : username;
+  return base.replace(/[._-]/g, " ").split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
 };
 
 const TOPICS = ["Becas", "Primer empleo", "Plan de carrera", "CV", "Cambio de carrera", "Emprendimiento", "Tech", "Otro"];
 
 export default function AsesoriaPage() {
-  const { wallet, connect } = useAccesly();
+  const { auth } = useAccesly();
+  const loggedIn = auth.status === "authenticated";
   const [topic, setTopic] = useState("");
   const [desc, setDesc] = useState("");
   const [showPay, setShowPay] = useState(false);
@@ -36,19 +38,19 @@ export default function AsesoriaPage() {
           <span className="font-gabarito text-xl font-black">Opportuni</span>
           <Link href="/" className="text-sm font-semibold text-gray-400 hover:text-opportuni-rosa transition-colors">← Inicio</Link>
         </div>
-        {wallet ? (
+        {loggedIn ? (
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-full border-bento border-opportuni-dark overflow-hidden flex items-center justify-center" style={{ background: "var(--cream)", boxShadow: "2px 2px 0 var(--dark)" }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/logo-opportuni.png" alt="" style={{ height: 22, width: "auto" }} />
             </div>
             <span className="font-gabarito text-sm font-bold text-opportuni-dark hidden sm:inline">
-              {getNameFromEmail(wallet.email)}
+              {displayName(auth.username)}
             </span>
           </div>
         ) : (
           <button
-            onClick={() => connect()}
+            onClick={() => auth.signInWithGoogle()}
             className="font-gabarito text-sm font-bold px-5 py-2 rounded-full border-bento border-opportuni-dark cursor-pointer transition-all"
             style={{ background: "var(--rosa)", color: "white", boxShadow: "2px 2px 0 var(--dark)" }}
           >
@@ -185,7 +187,7 @@ export default function AsesoriaPage() {
             <button onClick={handlePay} className="btn-rosa w-full text-center">
               Pagar y agendar ✦
             </button>
-            <p className="text-xs text-gray-400 text-center mt-3 font-mono">$300 MXN · Transferencia SPEI</p>
+            <p className="text-xs text-gray-400 text-center mt-3 font-mono">$300 MXN</p>
 
             {showPay && (
               <div className="mt-6 p-6 rounded-bento-lg border-bento border-opportuni-dark animate-slide-up" style={{ background: "var(--cream2)", boxShadow: "4px 4px 0 var(--dark)" }}>
