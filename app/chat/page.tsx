@@ -1,12 +1,13 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { useAccesly } from "accesly";
+import { useAccesly } from "@accesly/react";
 import Link from "next/link";
 
-const getNameFromEmail = (email: string) => {
-  const name = email.split("@")[0].replace(/[._-]/g, " ");
-  return name.split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+const displayName = (username: string | null) => {
+  if (!username) return "Mi cuenta";
+  const base = username.includes("@") ? username.split("@")[0] : username;
+  return base.replace(/[._-]/g, " ").split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
 };
 
 interface Message {
@@ -21,7 +22,9 @@ const suggestions = [
 ];
 
 export default function ChatPage() {
-  const { wallet, loading, connect } = useAccesly();
+  const { auth } = useAccesly();
+  const loading = auth.status === "bootstrapping";
+  const loggedIn = auth.status === "authenticated";
   const [messages, setMessages] = useState<Message[]>([
     { role: "assistant", content: "¡Hola! Soy **Opportuni** ✦ Pregúntame sobre cualquier beca, vacante, programa o convocatoria en LATAM. ¿Qué estás buscando?" },
   ]);
@@ -69,7 +72,7 @@ export default function ChatPage() {
     );
   }
 
-  if (!wallet) {
+  if (!loggedIn) {
     return (
       <div className="min-h-screen flex items-center justify-center px-4" style={{ background: "var(--cream)" }}>
         <div className="bento p-10 max-w-sm text-center">
@@ -80,7 +83,7 @@ export default function ChatPage() {
           <h2 className="text-2xl font-black mb-2">Bienvenido a Opportuni</h2>
           <p className="text-sm text-gray-500 mb-6">Inicia sesión para acceder al chat y todos los servicios ✦</p>
           <button
-            onClick={() => connect()}
+            onClick={() => auth.signInWithGoogle()}
             className="btn-rosa w-full text-center"
           >
             Iniciar sesión ✦
@@ -103,7 +106,7 @@ export default function ChatPage() {
             <img src="/logo-opportuni.png" alt="" style={{ height: 22, width: "auto" }} />
           </div>
           <span className="font-gabarito text-sm font-bold text-opportuni-dark hidden sm:inline">
-            {getNameFromEmail(wallet.email)}
+            {displayName(auth.username)}
           </span>
         </div>
       </nav>

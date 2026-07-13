@@ -195,7 +195,7 @@ export default function CVBuilderPage() {
             <div className="flex items-center gap-3 px-5 py-4" style={{ background: "var(--rosa)" }}>
               <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-sm font-bold" style={{ color: "var(--rosa)" }}>$</div>
               <span className="text-white font-bold font-gabarito">Desbloquea tu CV Builder</span>
-              <span className="ml-auto text-white font-gabarito font-black text-2xl">$300</span>
+              <span className="ml-auto text-white font-gabarito font-black text-2xl">$150</span>
               <span className="text-white/70 text-sm font-mono">MXN</span>
             </div>
 

@@ -1,12 +1,28 @@
 "use client";
 
-import { AcceslyProvider } from "accesly";
+import { AcceslyProvider } from "@accesly/react";
+import { IndexedDbDeviceStore } from "@accesly/core";
+import { useMemo } from "react";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
+  // IndexedDbDeviceStore throws in its constructor when `indexedDB` is missing
+  // (i.e. during Next.js SSR). Build it only in the browser; on the server we
+  // pass no override and AcceslyProvider falls back to its InMemoryDeviceStore.
+  const deviceStore = useMemo(
+    () => (typeof indexedDB !== "undefined" ? new IndexedDbDeviceStore() : undefined),
+    []
+  );
+
   return (
-    <AcceslyProvider 
-      appId={process.env.NEXT_PUBLIC_ACCESLY_APP_ID!}
-      theme="light"
+    <AcceslyProvider
+      // NOTE: the docs say env="prod", but this app's config is served from the
+      // `dev` environment API (api.accesly.xyz / staging don't resolve yet). The
+      // app itself is flagged environment:"prod" server-side — only the SDK's
+      // env→apiUrl mapping needs to point at the live backend.
+      appId={process.env.NEXT_PUBLIC_ACCESLY_APP_ID ?? "app_p_opportuni_7p8cf"}
+      env="dev"
+      authCallbackPath="/auth/callback"
+      overrides={deviceStore ? { deviceStore } : undefined}
     >
       {children}
     </AcceslyProvider>
