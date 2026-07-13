@@ -24,6 +24,21 @@ interface Submission {
   pdf?: string;
   submittedAt: number;
   source: "blob" | "local";
+  // CV intake fields
+  ciudadPais?: string;
+  linkedin?: string;
+  objetivo?: string;
+  puestoObjetivo?: string;
+  linkVacante?: string;
+  carrera?: string;
+  universidad?: string;
+  fechasEstudio?: string;
+  reconocimientos?: string;
+  experiencia?: string;
+  skills?: string;
+  idiomas?: string;
+  algoMas?: string;
+  fileName?: string;
 }
 
 const fmtDate = (ms: number) => {
@@ -43,6 +58,7 @@ export default function AdminPage() {
   const [data, setData] = useState<{ cvs: Submission[]; asesorias: Submission[] } | null>(null);
   const [err, setErr] = useState("");
   const [tab, setTab] = useState<"cvs" | "reuniones">("cvs");
+  const [detail, setDetail] = useState<Submission | null>(null);
 
   // Resolve the logged-in wallet.
   useEffect(() => {
@@ -153,18 +169,15 @@ export default function AdminPage() {
       {data && tab === "cvs" && (
         <SubTable
           rows={data.cvs}
-          cols={["Fecha", "Nombre", "Email", "WhatsApp", "Mensaje", "CV"]}
+          cols={["Fecha", "Nombre", "Puesto objetivo", "Email", ""]}
           render={(s) => [
             fmtDate(s.submittedAt),
             s.nombre,
+            s.puestoObjetivo || "—",
             s.email,
-            s.whatsapp,
-            s.mensaje || "—",
-            s.pdf ? (
-              <a href={`/api/admin/download?ref=${encodeURIComponent(s.pdf)}&w=${encodeURIComponent(addr!)}`} className="font-bold" style={{ color: "var(--rosa)" }}>
-                Descargar
-              </a>
-            ) : ("—"),
+            <button key="v" onClick={() => setDetail(s)} className="font-bold" style={{ color: "var(--rosa)", cursor: "pointer", background: "none", border: "none" }}>
+              Ver detalle
+            </button>,
           ]}
           empty="Aún no hay CVs."
         />
@@ -188,7 +201,69 @@ export default function AdminPage() {
           )}
         </>
       )}
+
+      {detail && <DetailModal s={detail} adminWallet={addr!} onClose={() => setDetail(null)} />}
     </Shell>
+  );
+}
+
+/* ---------- detail modal ---------- */
+
+const CV_FIELDS: { key: keyof Submission; label: string }[] = [
+  { key: "ciudadPais", label: "Ciudad y país" },
+  { key: "linkedin", label: "LinkedIn / portafolio" },
+  { key: "objetivo", label: "Objetivo del CV" },
+  { key: "puestoObjetivo", label: "Puesto objetivo" },
+  { key: "linkVacante", label: "Link de vacante" },
+  { key: "carrera", label: "Carrera / estudios" },
+  { key: "universidad", label: "Universidad (historial)" },
+  { key: "fechasEstudio", label: "Fechas de estudio" },
+  { key: "reconocimientos", label: "Reconocimientos" },
+  { key: "experiencia", label: "Experiencia" },
+  { key: "skills", label: "Skills y herramientas" },
+  { key: "idiomas", label: "Idiomas" },
+  { key: "algoMas", label: "Algo más" },
+  { key: "mensaje", label: "Mensaje" },
+];
+
+function DetailModal({ s, adminWallet, onClose }: { s: Submission; adminWallet: string; onClose: () => void }) {
+  return (
+    <div onClick={onClose} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 2200, display: "flex", alignItems: "center", justifyContent: "center", padding: "1rem" }}>
+      <div onClick={(e) => e.stopPropagation()} className="bento" style={{ background: "var(--cream)", width: "min(94vw, 560px)", maxHeight: "88vh", overflowY: "auto", padding: 24, position: "relative" }}>
+        <button onClick={onClose} aria-label="Cerrar" style={{ position: "absolute", top: 12, right: 14, border: "none", background: "transparent", fontSize: 20, cursor: "pointer", color: "var(--dark)", lineHeight: 1 }}>✕</button>
+
+        <h2 className="text-2xl font-black mb-1">{s.nombre}</h2>
+        <p className="text-xs text-gray-400 font-mono mb-4">{fmtDate(s.submittedAt)} · {s.source}</p>
+
+        <Detail label="Correo" value={s.email} />
+        <Detail label="WhatsApp" value={s.whatsapp} />
+        {CV_FIELDS.map(({ key, label }) => {
+          const v = s[key];
+          return typeof v === "string" && v.trim() ? <Detail key={key} label={label} value={v} /> : null;
+        })}
+
+        {s.pdf ? (
+          <a
+            href={`/api/admin/download?ref=${encodeURIComponent(s.pdf)}&w=${encodeURIComponent(adminWallet)}`}
+            className="inline-block mt-4 py-2.5 px-5 rounded-full font-bold text-sm text-white"
+            style={{ background: "var(--rosa)", border: "2.5px solid var(--dark)", boxShadow: "2px 2px 0 var(--dark)" }}
+          >
+            ⬇ Descargar CV (PDF)
+          </a>
+        ) : (
+          <p className="text-xs text-gray-400 mt-4">No adjuntó CV en PDF.</p>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function Detail({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="mb-3">
+      <p className="text-[11px] font-mono font-bold uppercase mb-0.5" style={{ color: "var(--nar)" }}>{label}</p>
+      <p className="text-sm whitespace-pre-wrap break-words">{value}</p>
+    </div>
   );
 }
 
