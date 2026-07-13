@@ -42,7 +42,16 @@ export default function WalletModal({ onClose }: { onClose: () => void }) {
     void (async () => {
       try {
         const cred = email ? await wallet.getStoredCredential(email) : null;
-        if (!cancelled) setView(cred ? "home" : "create");
+        if (cred) {
+          if (!cancelled) setView("home");
+          return;
+        }
+        // No hay credencial local en este dispositivo/dominio. Si la cuenta YA
+        // tiene wallet en el backend (p.ej. creada en otro dominio como
+        // localhost), hay que RECUPERARLA aquí con un passkey nuevo — no
+        // recrearla (si no, CreateWalletFlow entra en bucle de "ya existe").
+        const remote = await wallet.fetchRemote();
+        if (!cancelled) setView(remote?.walletAddress ? "recover" : "create");
       } catch {
         if (!cancelled) setView("create");
       }
@@ -171,7 +180,6 @@ export default function WalletModal({ onClose }: { onClose: () => void }) {
             password={passphrase}
             onDone={() => setView("home")}
             onRecoverInstead={() => setView("recover")}
-            onError={() => setAskPass(true)}
           />
         )}
       </div>
