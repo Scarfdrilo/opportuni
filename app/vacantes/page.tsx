@@ -146,9 +146,15 @@ export default function VacantesPage() {
                     </div>
                     <div className="flex flex-col gap-2 shrink-0">
                       {v.url ? (
-                        <a href={v.url} target="_blank" rel="noopener noreferrer" className="btn-rosa text-center whitespace-nowrap px-6 py-3 text-sm">
-                          Aplicar ✦
-                        </a>
+                        v.url.startsWith("/") ? (
+                          <Link href={v.url} className="btn-rosa text-center whitespace-nowrap px-6 py-3 text-sm">
+                            Aplicar ✦
+                          </Link>
+                        ) : (
+                          <a href={v.url} target="_blank" rel="noopener noreferrer" className="btn-rosa text-center whitespace-nowrap px-6 py-3 text-sm">
+                            Aplicar ✦
+                          </a>
+                        )
                       ) : (
                         <button className="btn-rosa px-6 py-3 text-sm">Aplicar ✦</button>
                       )}

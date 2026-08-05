@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
-import { getVacantes } from "../../lib/vacantes-store";
+import { listVacantesActivas } from "../../lib/supabase";
 
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY || "",
@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const vacantes = getVacantes();
+    const vacantes = await listVacantesActivas().catch(() => []);
 
     const systemPrompt = `Eres el asistente de Opportuni, una comunidad que conecta jóvenes talentosos en Latinoamérica con oportunidades educativas y profesionales.
 

@@ -41,6 +41,24 @@ interface Submission {
   fileName?: string;
 }
 
+interface VacStat {
+  vacante_id: string;
+  titulo: string;
+  empresa: string | null;
+  activa: boolean;
+  clicks: number;
+  postulantes: number;
+  created_at: string;
+}
+
+interface Postulante {
+  nombre: string;
+  carrera_area: string;
+  whatsapp: string;
+  cv_link: string | null;
+  created_at: string;
+}
+
 const fmtDate = (ms: number) => {
   try {
     return new Date(ms).toLocaleString("es-MX", { dateStyle: "medium", timeStyle: "short" });
@@ -57,8 +75,13 @@ export default function AdminPage() {
   const [ready, setReady] = useState(false);
   const [data, setData] = useState<{ cvs: Submission[]; asesorias: Submission[] } | null>(null);
   const [err, setErr] = useState("");
-  const [tab, setTab] = useState<"cvs" | "reuniones">("cvs");
+  const [tab, setTab] = useState<"cvs" | "reuniones" | "vacantes">("cvs");
   const [detail, setDetail] = useState<Submission | null>(null);
+  const [stats, setStats] = useState<VacStat[] | null>(null);
+  const [statsErr, setStatsErr] = useState("");
+  const [statsV, setStatsV] = useState(0);
+  const [vacDetail, setVacDetail] = useState<VacStat | null>(null);
+  const [showNewVac, setShowNewVac] = useState(false);
 
   // Resolve the logged-in wallet.
   useEffect(() => {
@@ -102,6 +125,26 @@ export default function AdminPage() {
       cancelled = true;
     };
   }, [isAdmin, addr]);
+
+  // Load vacante click/postulante stats (Supabase) once authorized.
+  useEffect(() => {
+    if (!isAdmin || !addr) return;
+    let cancelled = false;
+    void (async () => {
+      try {
+        const r = await fetch("/api/admin/vacantes", { headers: { "x-admin-wallet": addr } });
+        const d = await r.json();
+        if (cancelled) return;
+        if (d.ok) setStats(d.stats);
+        else setStatsErr(d.error || "Error al cargar vacantes.");
+      } catch {
+        if (!cancelled) setStatsErr("No se pudieron cargar las vacantes.");
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [isAdmin, addr, statsV]);
 
   // ---- States ----
   if (!ready) {
@@ -161,6 +204,7 @@ export default function AdminPage() {
       <div className="flex gap-2 mb-5">
         <Tab active={tab === "cvs"} onClick={() => setTab("cvs")}>CVs {data ? `(${data.cvs.length})` : ""}</Tab>
         <Tab active={tab === "reuniones"} onClick={() => setTab("reuniones")}>Reuniones {data ? `(${data.asesorias.length})` : ""}</Tab>
+        <Tab active={tab === "vacantes"} onClick={() => setTab("vacantes")}>Vacantes {stats ? `(${stats.length})` : ""}</Tab>
       </div>
 
       {err && <p className="text-sm text-red-600 mb-4">{err}</p>}
@@ -202,8 +246,266 @@ export default function AdminPage() {
         </>
       )}
 
+      {tab === "vacantes" && (
+        <>
+          <button onClick={() => setShowNewVac(true)} className="btn-rosa mb-4 px-5 py-2.5 text-sm">
+            ＋ Nueva vacante
+          </button>
+          {statsErr && <p className="text-sm text-red-600 mb-4">{statsErr}</p>}
+          {!stats && !statsErr && <div className="w-6 h-6 border-3 border-opportuni-rosa border-t-transparent rounded-full animate-spin" />}
+          {stats && (
+            <SubTable
+              rows={stats}
+              cols={["Vacante", "Empresa", "Clicks", "Postulantes", "Links", ""]}
+              render={(v) => [
+                <span key="t">
+                  {v.titulo}
+                  {!v.activa && <span className="text-xs text-gray-400 ml-2">(inactiva)</span>}
+                  <span className="block text-xs text-gray-400 font-mono">/v/{v.vacante_id}</span>
+                </span>,
+                v.empresa || "—",
+                <b key="c">{v.clicks}</b>,
+                <b key="p">{v.postulantes}</b>,
+                <CopyLinks key="l" id={v.vacante_id} />,
+                <button key="v" onClick={() => setVacDetail(v)} className="font-bold" style={{ color: "var(--rosa)", cursor: "pointer", background: "none", border: "none" }}>
+                  Ver postulantes
+                </button>,
+              ]}
+              empty="Aún no hay vacantes. Crea la primera con el botón de arriba."
+            />
+          )}
+          <p className="text-xs text-gray-400 mt-3">
+            El link corto y el form de cada vacante quedan activos al instante al crearla.
+            Si la vacante no tiene URL externa, el link corto lleva a su página de detalle en Opportuni.
+          </p>
+        </>
+      )}
+
       {detail && <DetailModal s={detail} adminWallet={addr!} onClose={() => setDetail(null)} />}
+      {vacDetail && <PostulantesModal v={vacDetail} adminWallet={addr!} onClose={() => setVacDetail(null)} />}
+      {showNewVac && (
+        <NewVacanteModal
+          adminWallet={addr!}
+          onClose={() => setShowNewVac(false)}
+          onCreated={() => setStatsV((v) => v + 1)}
+        />
+      )}
     </Shell>
+  );
+}
+
+/* ---------- vacantes: alta, links + postulantes ---------- */
+
+const slugify = (s: string) =>
+  s.toLowerCase()
+    .normalize("NFD").replace(/[̀-ͯ]/g, "")
+    .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 40);
+
+function NewVacanteModal({ adminWallet, onClose, onCreated }: { adminWallet: string; onClose: () => void; onCreated: () => void }) {
+  const [titulo, setTitulo] = useState("");
+  const [id, setId] = useState("");
+  const [idTouched, setIdTouched] = useState(false);
+  const [empresa, setEmpresa] = useState("");
+  const [ubicacion, setUbicacion] = useState("");
+  const [tipo, setTipo] = useState("remoto");
+  const [salario, setSalario] = useState("");
+  const [descripcion, setDescripcion] = useState("");
+  const [urlDestino, setUrlDestino] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [created, setCreated] = useState(false);
+  const [err, setErr] = useState("");
+  const [copied, setCopied] = useState("");
+
+  const finalId = idTouched ? id : slugify(titulo);
+  const valid = titulo.trim() && /^[a-z0-9][a-z0-9-]{1,39}$/.test(finalId);
+
+  const submit = async () => {
+    if (!valid) return;
+    setSaving(true);
+    setErr("");
+    try {
+      const r = await fetch("/api/admin/vacantes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-admin-wallet": adminWallet },
+        body: JSON.stringify({ id: finalId, titulo, empresa, ubicacion, tipo, salario, descripcion, urlDestino }),
+      });
+      const d = await r.json();
+      if (!r.ok || !d.ok) throw new Error(d.error || "No se pudo crear.");
+      setCreated(true);
+      onCreated();
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : "Error al crear.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const copy = (path: string) => {
+    void navigator.clipboard.writeText(`${window.location.origin}${path}`);
+    setCopied(path);
+    setTimeout(() => setCopied(""), 1500);
+  };
+
+  return (
+    <div onClick={onClose} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 2200, display: "flex", alignItems: "center", justifyContent: "center", padding: "1rem" }}>
+      <div onClick={(e) => e.stopPropagation()} className="bento" style={{ background: "var(--cream)", width: "min(94vw, 480px)", maxHeight: "90vh", overflowY: "auto", padding: 24, position: "relative" }}>
+        <button onClick={onClose} aria-label="Cerrar" style={{ position: "absolute", top: 12, right: 14, border: "none", background: "transparent", fontSize: 20, cursor: "pointer", color: "var(--dark)", lineHeight: 1 }}>✕</button>
+
+        {created ? (
+          <div style={{ textAlign: "center", padding: "8px 0" }}>
+            <div className="text-5xl mb-2">🎉</div>
+            <h3 className="text-2xl font-black mb-2">¡Vacante creada!</h3>
+            <p className="text-sm text-gray-500 mb-4">Comparte estos links — ya están activos:</p>
+            <div className="text-left rounded-xl px-4 py-3 mb-4 space-y-2" style={{ background: "var(--cream2)", border: "2px solid var(--dark)" }}>
+              <div>
+                <p className="text-[11px] font-mono font-bold uppercase" style={{ color: "var(--nar)" }}>Link corto (WhatsApp)</p>
+                <button onClick={() => copy(`/v/${finalId}`)} className="text-sm font-mono font-bold break-all text-left" style={{ background: "none", border: "none", cursor: "pointer", color: "var(--rosa)" }}>
+                  {copied === `/v/${finalId}` ? "✓ Copiado" : `/v/${finalId} 📋`}
+                </button>
+              </div>
+              <div>
+                <p className="text-[11px] font-mono font-bold uppercase" style={{ color: "var(--nar)" }}>Form de postulación</p>
+                <button onClick={() => copy(`/postular/${finalId}`)} className="text-sm font-mono font-bold break-all text-left" style={{ background: "none", border: "none", cursor: "pointer", color: "var(--rosa)" }}>
+                  {copied === `/postular/${finalId}` ? "✓ Copiado" : `/postular/${finalId} 📋`}
+                </button>
+              </div>
+            </div>
+            <button onClick={onClose} className="btn-rosa w-full text-center">Listo</button>
+          </div>
+        ) : (
+          <div>
+            <h3 className="text-2xl font-black mb-4 text-center">Nueva vacante</h3>
+
+            <label className="block text-xs font-bold mb-1">Título *</label>
+            <input value={titulo} onChange={(e) => setTitulo(e.target.value)} placeholder="Ej. Product Manager Jr" className="input-bento w-full mb-3" />
+
+            <label className="block text-xs font-bold mb-1">Link corto (slug) *</label>
+            <div className="flex items-center gap-1 mb-3">
+              <span className="text-xs font-mono text-gray-400">/v/</span>
+              <input
+                value={finalId}
+                onChange={(e) => { setIdTouched(true); setId(slugify(e.target.value)); }}
+                placeholder="pm-nubank"
+                className="input-bento flex-1 font-mono text-sm"
+              />
+            </div>
+
+            <label className="block text-xs font-bold mb-1">Empresa</label>
+            <input value={empresa} onChange={(e) => setEmpresa(e.target.value)} placeholder="Ej. Nubank" className="input-bento w-full mb-3" />
+
+            <div className="grid grid-cols-2 gap-2 mb-3">
+              <div>
+                <label className="block text-xs font-bold mb-1">Tipo</label>
+                <select value={tipo} onChange={(e) => setTipo(e.target.value)} className="input-bento w-full">
+                  <option value="remoto">Remoto</option>
+                  <option value="presencial">Presencial</option>
+                  <option value="hibrido">Híbrido</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs font-bold mb-1">Ubicación</label>
+                <input value={ubicacion} onChange={(e) => setUbicacion(e.target.value)} placeholder="CDMX" className="input-bento w-full" />
+              </div>
+            </div>
+
+            <label className="block text-xs font-bold mb-1">Salario</label>
+            <input value={salario} onChange={(e) => setSalario(e.target.value)} placeholder="Ej. $20,000 MXN (opcional)" className="input-bento w-full mb-3" />
+
+            <label className="block text-xs font-bold mb-1">Descripción</label>
+            <textarea value={descripcion} onChange={(e) => setDescripcion(e.target.value)} rows={3} placeholder="De qué va el puesto…" className="input-bento w-full mb-3" />
+
+            <label className="block text-xs font-bold mb-1">URL externa (opcional)</label>
+            <p className="text-[11px] text-gray-400 mb-1 leading-snug">Si la llenas, el link corto manda ahí. Si la dejas vacía, manda al detalle de la vacante en Opportuni (con botón de postulación).</p>
+            <input value={urlDestino} onChange={(e) => setUrlDestino(e.target.value)} placeholder="https://…" className="input-bento w-full mb-4" />
+
+            {err && <p className="text-sm text-red-600 mb-3 text-center">{err}</p>}
+
+            <button onClick={submit} disabled={!valid || saving} className="btn-rosa w-full text-center disabled:opacity-50">
+              {saving ? "Creando…" : "Crear vacante ✦"}
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function CopyLinks({ id }: { id: string }) {
+  const [copied, setCopied] = useState<"v" | "p" | null>(null);
+  const copy = (kind: "v" | "p") => {
+    const path = kind === "v" ? `/v/${id}` : `/postular/${id}`;
+    void navigator.clipboard.writeText(`${window.location.origin}${path}`);
+    setCopied(kind);
+    setTimeout(() => setCopied(null), 1500);
+  };
+  const style: React.CSSProperties = {
+    border: "2px solid var(--dark)",
+    background: "white",
+    borderRadius: 999,
+    padding: "2px 10px",
+    fontSize: 11,
+    fontWeight: 700,
+    cursor: "pointer",
+  };
+  return (
+    <span className="flex gap-1.5 flex-wrap">
+      <button onClick={() => copy("v")} style={style}>{copied === "v" ? "✓ Copiado" : "Link corto"}</button>
+      <button onClick={() => copy("p")} style={style}>{copied === "p" ? "✓ Copiado" : "Form"}</button>
+    </span>
+  );
+}
+
+function PostulantesModal({ v, adminWallet, onClose }: { v: VacStat; adminWallet: string; onClose: () => void }) {
+  const [rows, setRows] = useState<Postulante[] | null>(null);
+  const [err, setErr] = useState("");
+
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      try {
+        const r = await fetch(`/api/admin/vacantes?vacante=${encodeURIComponent(v.vacante_id)}`, {
+          headers: { "x-admin-wallet": adminWallet },
+        });
+        const d = await r.json();
+        if (cancelled) return;
+        if (d.ok) setRows(d.postulantes);
+        else setErr(d.error || "Error al cargar.");
+      } catch {
+        if (!cancelled) setErr("No se pudieron cargar los postulantes.");
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [v.vacante_id, adminWallet]);
+
+  return (
+    <div onClick={onClose} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 2200, display: "flex", alignItems: "center", justifyContent: "center", padding: "1rem" }}>
+      <div onClick={(e) => e.stopPropagation()} className="bento" style={{ background: "var(--cream)", width: "min(94vw, 560px)", maxHeight: "88vh", overflowY: "auto", padding: 24, position: "relative" }}>
+        <button onClick={onClose} aria-label="Cerrar" style={{ position: "absolute", top: 12, right: 14, border: "none", background: "transparent", fontSize: 20, cursor: "pointer", color: "var(--dark)", lineHeight: 1 }}>✕</button>
+
+        <h2 className="text-2xl font-black mb-1">{v.titulo}</h2>
+        <p className="text-xs text-gray-400 font-mono mb-4">
+          {v.clicks} clicks · {v.postulantes} postulantes
+        </p>
+
+        {err && <p className="text-sm text-red-600">{err}</p>}
+        {!rows && !err && <div className="w-6 h-6 border-3 border-opportuni-rosa border-t-transparent rounded-full animate-spin" />}
+        {rows && rows.length === 0 && <p className="text-sm text-gray-500">Aún no hay postulantes.</p>}
+        {rows?.map((p, i) => (
+          <div key={i} className="rounded-xl px-4 py-3 mb-2" style={{ background: "var(--cream2)", border: "2px solid var(--dark)" }}>
+            <p className="font-bold text-sm">{p.nombre}</p>
+            <p className="text-xs text-gray-500">{p.carrera_area} · {p.whatsapp}</p>
+            {p.cv_link && (
+              <a href={p.cv_link} target="_blank" rel="noopener noreferrer" className="text-xs font-bold break-all" style={{ color: "var(--rosa)" }}>
+                {p.cv_link}
+              </a>
+            )}
+            <p className="text-[11px] text-gray-400 mt-1">{fmtDate(new Date(p.created_at).getTime())}</p>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -299,15 +601,15 @@ function Tab({ active, onClick, children }: { active: boolean; onClick: () => vo
   );
 }
 
-function SubTable({
+function SubTable<T>({
   rows,
   cols,
   render,
   empty,
 }: {
-  rows: Submission[];
+  rows: T[];
   cols: string[];
-  render: (s: Submission) => React.ReactNode[];
+  render: (s: T) => React.ReactNode[];
   empty: string;
 }) {
   if (!rows.length) return <p className="text-sm text-gray-500 py-8 text-center">{empty}</p>;
