@@ -267,9 +267,18 @@ export default function AdminPage() {
                 <b key="c">{v.clicks}</b>,
                 <b key="p">{v.postulantes}</b>,
                 <CopyLinks key="l" id={v.vacante_id} />,
-                <button key="v" onClick={() => setVacDetail(v)} className="font-bold" style={{ color: "var(--rosa)", cursor: "pointer", background: "none", border: "none" }}>
-                  Ver postulantes
-                </button>,
+                <span key="v" className="flex flex-col gap-1">
+                  <button onClick={() => setVacDetail(v)} className="font-bold text-left" style={{ color: "var(--rosa)", cursor: "pointer", background: "none", border: "none", padding: 0 }}>
+                    Ver postulantes
+                  </button>
+                  <a
+                    href={`/api/admin/reporte?vacante=${encodeURIComponent(v.vacante_id)}&w=${encodeURIComponent(addr!)}`}
+                    className="font-bold"
+                    style={{ color: "var(--nar)" }}
+                  >
+                    ⬇ Reporte PDF
+                  </a>
+                </span>,
               ]}
               empty="Aún no hay vacantes. Crea la primera con el botón de arriba."
             />
