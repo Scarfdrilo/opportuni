@@ -1,15 +1,8 @@
 "use client";
 
-import { useAccesly } from "@accesly/react";
 import Link from "next/link";
 import { useState } from "react";
 import { convocatorias, Convocatoria } from "../lib/convocatorias-store";
-
-const displayName = (username: string | null) => {
-  if (!username) return "Mi cuenta";
-  const base = username.includes("@") ? username.split("@")[0] : username;
-  return base.replace(/[._-]/g, " ").split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
-};
 
 const tipoColors: Record<string, string> = {
   "Programa": "badge-rosa",
@@ -36,8 +29,6 @@ const paisFlags: Record<string, string> = {
 };
 
 export default function ConvocatoriasPage() {
-  const { auth } = useAccesly();
-  const loggedIn = auth.status === "authenticated";
   const [filtroTipo, setFiltroTipo] = useState<string>("todos");
   const [filtroPais, setFiltroPais] = useState<string>("todos");
   const [busqueda, setBusqueda] = useState<string>("");
@@ -57,79 +48,8 @@ export default function ConvocatoriasPage() {
     return matchTipo && matchPais && matchBusqueda;
   });
 
-  // If not logged in, show login prompt
-  if (!loggedIn) {
-    return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: "var(--cream)" }}>
-        <div className="text-center max-w-md px-6">
-          <div className="text-6xl mb-6">🔒</div>
-          <h1 className="text-3xl font-black mb-4" style={{ color: "var(--rosa)" }}>
-            Contenido Exclusivo
-          </h1>
-          <p className="text-gray-600 mb-8">
-            Las convocatorias curadas están disponibles solo para miembros. 
-            Inicia sesión para acceder a +29 oportunidades de becas, aceleradoras, 
-            competencias y más.
-          </p>
-          <button
-            onClick={() => auth.signInWithGoogle()}
-            className="btn-primary"
-          >
-            Iniciar sesión ✦
-          </button>
-          <Link href="/" className="block mt-6 text-sm text-gray-500 hover:text-gray-700">
-            ← Volver al inicio
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen" style={{ background: "var(--cream)" }}>
-      {/* Connect Button Portal */}
-      <div className="connect-button-portal">
-        {loggedIn ? (
-          <button
-            onClick={() => auth.signOut()}
-            className="user-pill"
-            title="Cerrar sesión"
-            style={{ cursor: "pointer" }}
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/logo-opportuni.png" alt="" className="user-pill-avatar" />
-            <span>{displayName(auth.username)}</span>
-          </button>
-        ) : (
-          <button
-            onClick={() => auth.signInWithGoogle()}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "0.55rem",
-              padding: "0.7rem 1.4rem",
-              background: "linear-gradient(135deg, var(--rosa) 0%, var(--nar) 100%)",
-              color: "#ffffff",
-              border: "2.5px solid var(--dark)",
-              borderRadius: "9999px",
-              fontSize: "0.95rem",
-              fontWeight: 700,
-              cursor: "pointer",
-              whiteSpace: "nowrap",
-              transition: "transform 0.15s, box-shadow 0.15s",
-              boxShadow: "3px 3px 0 var(--dark)",
-              fontFamily: "Gabarito, var(--font-body), system-ui, sans-serif",
-            }}
-          >
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-              <path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2.5" />
-              <path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4" />
-            </svg>
-            Iniciar sesión
-          </button>
-        )}
-      </div>
-
       {/* Nav */}
       <nav className="nav-bento">
         <Link href="/" className="flex items-center gap-[10px]">

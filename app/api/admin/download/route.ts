@@ -1,16 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getPdf, isAdminWallet } from "../../../lib/submissions";
+import { getPdf, ADMIN_API_ENABLED } from "../../../lib/submissions";
 
 export const runtime = "nodejs";
 
-// Streams a CV PDF for download. Gated by the admin wallet (query `w` — an
-// <a href> can't set custom headers). Pilot-grade; wallet is public.
+// Descarga el PDF de un CV. Desactivada junto con el dashboard: sin gate, esto
+// serviría CVs a cualquiera con la URL (ver ADMIN_API_ENABLED).
 export async function GET(req: NextRequest) {
-  const url = new URL(req.url);
-  const wallet = req.headers.get("x-admin-wallet") ?? url.searchParams.get("w");
-  if (!isAdminWallet(wallet)) {
-    return NextResponse.json({ ok: false, error: "No autorizado." }, { status: 403 });
+  if (!ADMIN_API_ENABLED) {
+    return NextResponse.json(
+      { ok: false, error: "El dashboard está desactivado." },
+      { status: 503 }
+    );
   }
+  const url = new URL(req.url);
   const ref = url.searchParams.get("ref") ?? "";
   const pdf = await getPdf(ref);
   if (!pdf) {

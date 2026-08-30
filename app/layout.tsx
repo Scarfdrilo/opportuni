@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Bricolage_Grotesque, DM_Mono } from "next/font/google";
 import "./globals.css";
-import Providers from "./providers";
 
 const bricolage = Bricolage_Grotesque({
   subsets: ["latin", "latin-ext"],
@@ -42,7 +41,7 @@ export default function RootLayout({
         />
       </head>
       <body className={bricolage.className}>
-        <Providers>{children}</Providers>
+        {children}
       </body>
     </html>
   );

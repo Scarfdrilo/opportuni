@@ -21,39 +21,6 @@
   --bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* ===== Accesly kit theming — map the SDK's design tokens to Opportuni's
-   palette so <WalletHome>, <BalanceCard>, <MovementsList> and the flows blend
-   in. (useBranding() also sets --accesly-primary / --accesly-secondary from
-   the dashboard at runtime; those already resolve to rosa/naranja.) ===== */
-:root {
-  --accesly-primary: #e3216d;
-  --accesly-primary-ink: #e3216d;
-  --accesly-primary-soft: rgba(227, 33, 109, 0.12);
-  --accesly-secondary: #f89b0e;
-  --accesly-accent: #0ec4a9;
-  --accesly-grad: linear-gradient(135deg, #e3216d 0%, #f89b0e 100%);
-  --grad: linear-gradient(135deg, #e3216d 0%, #f89b0e 100%);
-
-  --accesly-text: #1a1a2e;
-  --accesly-ink: #1a1a2e;
-  --ink: #1a1a2e;
-  --accesly-muted: #6b6b76;
-  --ink2: #6b6b76;
-  --accesly-muted2: #9e95a7;
-  --ink3: #9e95a7;
-
-  --accesly-card: #ffffff;
-  --card: #ffffff;
-  --accesly-card2: #faf0e2;
-  --card2: #faf0e2;
-
-  --accesly-border: rgba(26, 26, 46, 0.18);
-  --accesly-line: rgba(26, 26, 46, 0.12);
-  --line: rgba(26, 26, 46, 0.12);
-  --accesly-danger: #ef4444;
-  --accesly-success: #0ec4a9;
-}
-
 ::selection {
   background: #e3216d;
   color: white;
@@ -479,8 +446,8 @@
   background: var(--rosa);
 }
 
-/* ===== Accesly Modal Fix ===== */
-/* The modal backdrop and container need highest z-index */
+/* ===== Modales ===== */
+/* El backdrop y el contenedor del modal van por encima de todo */
 body > div[style*="position: fixed"][style*="inset: 0"],
 body > div[style*="position: fixed"][style*="z-index"],
 div[role="dialog"],
@@ -488,106 +455,7 @@ div[aria-modal="true"] {
   z-index: 99999 !important;
 }
 
-/* Ensure nav stays below modals */
+/* El nav se queda por debajo de los modales */
 .nav-bento {
   z-index: 100;
-}
-
-/* Force any iframe from accesly to be on top */
-iframe[src*="accesly"] {
-  z-index: 99999 !important;
-}
-
-/* ===== Connect Button Portal ===== */
-.connect-button-portal {
-  position: fixed;
-  top: 19px;
-  right: max(calc(50% - 438px), 28px);
-  z-index: 1000;
-}
-
-/* The portal button now carries its own inline styles (Accesly SDK v2 — no
-   more <ConnectButton>), so the old skinning/relabel hacks were removed. */
-
-/* ===== Accesly Panel Bento Style ===== */
-[data-accesly-panel],
-div[class*="WalletPanel"],
-div[class*="Panel"][style*="position"] {
-  border: 2.5px solid var(--dark) !important;
-  border-radius: var(--r-lg, 28px) !important;
-  box-shadow: 4px 4px 0 var(--dark) !important;
-  background: var(--dark, #1a1a2e) !important;
-}
-
-/* Adjust portal position for better centering */
-
-/* ===== User Pill (logged in state) ===== */
-.user-pill-wrapper {
-  position: relative;
-}
-
-.user-pill {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 16px 8px 8px;
-  background: var(--cream);
-  border: 2.5px solid var(--dark);
-  border-radius: 9999px;
-  box-shadow: 2px 2px 0 var(--dark);
-  font-family: Gabarito, var(--font-body), system-ui, sans-serif;
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--dark);
-  cursor: pointer;
-}
-
-.user-pill-avatar {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  border: 2px solid var(--dark);
-  object-fit: cover;
-}
-
-.user-pill:hover {
-  transform: translate(-1px, -1px);
-  box-shadow: 3px 3px 0 var(--dark);
-}
-
-/* Hidden ConnectButton - click on pill opens it */
-.hidden-connect {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  opacity: 0;
-  cursor: pointer;
-}
-
-.hidden-connect button {
-  width: 100% !important;
-  height: 100% !important;
-}
-
-/* Login button wrapper - btn-primary with hidden ConnectButton overlay */
-.login-btn-wrapper {
-  position: relative;
-  display: inline-block;
-}
-
-.login-btn-wrapper .hidden-connect {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  opacity: 0;
-  cursor: pointer;
-}
-
-.login-btn-wrapper .hidden-connect button {
-  width: 100% !important;
-  height: 100% !important;
 }

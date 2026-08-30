@@ -1,14 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { useAccesly } from "@accesly/react";
 import Link from "next/link";
-
-const displayName = (username: string | null) => {
-  if (!username) return "Mi cuenta";
-  const base = username.includes("@") ? username.split("@")[0] : username;
-  return base.replace(/[._-]/g, " ").split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
-};
 
 interface Message {
   role: "user" | "assistant";
@@ -22,9 +15,6 @@ const suggestions = [
 ];
 
 export default function ChatPage() {
-  const { auth } = useAccesly();
-  const loading = auth.status === "bootstrapping";
-  const loggedIn = auth.status === "authenticated";
   const [messages, setMessages] = useState<Message[]>([
     { role: "assistant", content: "¡Hola! Soy **Opportuni** ✦ Pregúntame sobre cualquier beca, vacante, programa o convocatoria en LATAM. ¿Qué estás buscando?" },
   ]);
@@ -64,35 +54,6 @@ export default function ChatPage() {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: "var(--cream)" }}>
-        <div className="w-8 h-8 border-3 border-opportuni-rosa border-t-transparent rounded-full animate-spin" />
-      </div>
-    );
-  }
-
-  if (!loggedIn) {
-    return (
-      <div className="min-h-screen flex items-center justify-center px-4" style={{ background: "var(--cream)" }}>
-        <div className="bento p-10 max-w-sm text-center">
-          <div className="w-16 h-16 rounded-full border-bento border-opportuni-dark flex items-center justify-center mx-auto mb-5 overflow-hidden" style={{ background: "var(--cream)", boxShadow: "3px 3px 0 var(--dark)" }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/logo-opportuni.png" alt="Opportuni" style={{ height: 40, width: "auto" }} />
-          </div>
-          <h2 className="text-2xl font-black mb-2">Bienvenido a Opportuni</h2>
-          <p className="text-sm text-gray-500 mb-6">Inicia sesión para acceder al chat y todos los servicios ✦</p>
-          <button
-            onClick={() => auth.signInWithGoogle()}
-            className="btn-rosa w-full text-center"
-          >
-            Iniciar sesión ✦
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen" style={{ background: "var(--cream)" }}>
       <nav className="nav-bento">
@@ -105,9 +66,6 @@ export default function ChatPage() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/logo-opportuni.png" alt="" style={{ height: 22, width: "auto" }} />
           </div>
-          <span className="font-gabarito text-sm font-bold text-opportuni-dark hidden sm:inline">
-            {displayName(auth.username)}
-          </span>
         </div>
       </nav>
 

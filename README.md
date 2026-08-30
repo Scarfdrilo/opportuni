@@ -6,7 +6,7 @@ Plataforma para publicar y encontrar vacantes en México, Colombia y toda Latino
 
 ## Features
 
-- 🔐 **Social Login** con Accesly SDK
+- 🌐 **Acceso libre** — sin login; todo el contenido es público
 - 📋 **API de Vacantes** para publicar oportunidades
 - 🎨 **UI moderna** con paleta rosa-naranja
 - 📱 **Responsive** para web y móvil
@@ -26,9 +26,15 @@ bun run build
 
 ## Environment Variables
 
-```env
-NEXT_PUBLIC_ACCESLY_APP_ID=acc_your_app_id
-```
+Copia `.env.example` a `.env.local` y llena los valores (Supabase, Vercel Blob
+y el calendario de citas). No hay variables de login: el SDK de Accesly se
+retiró del proyecto.
+
+> **Desactivado tras retirar Accesly:** el login Google, la wallet, el cobro
+> on-chain de "Review de CV" y "Asesoría 1:1" en el home, y el dashboard
+> `/admin` (su gate era la wallet del usuario, así que `/api/admin/*` responde
+> 503 — ver `ADMIN_API_ENABLED` en `app/lib/submissions.ts`). `/cv` y
+> `/cv/asesoria` siguen funcionando: cobran por transferencia.
 
 ## API Reference
 
@@ -75,7 +81,6 @@ Elimina una vacante por ID.
 - Next.js 14
 - React 18
 - Tailwind CSS
-- Accesly SDK (Social Login)
 - TypeScript
 
 ## Deploy

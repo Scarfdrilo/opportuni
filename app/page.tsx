@@ -1,14 +1,7 @@
 "use client";
 
-import { useAccesly } from "@accesly/react";
 import Link from "next/link";
 import { useState } from "react";
-import WalletModal from "./wallet-modal";
-import PayModal, { type ServiceKey } from "./pay-modal";
-import CvUploadModal from "./cv-upload-modal";
-import AsesoriaModal from "./asesoria-modal";
-
-const paidKey = (svc: ServiceKey) => `opportuni_paid_${svc}`;
 
 const testimonios = [
   { nombre: "Valentina R.", texto: "Encontré la beca que me trajo a estudiar a Países Bajos gracias a que la compartieron en el grupo.", rol: "Beca Erasmus · Ingeniería", color: "var(--rosa)" },
@@ -47,113 +40,15 @@ const faqs = [
   },
 ];
 
-const displayName = (username: string | null) => {
-  if (!username) return "Mi cuenta";
-  const base = username.includes("@") ? username.split("@")[0] : username;
-  return base.replace(/[._-]/g, " ").split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
-};
-
 export default function Home() {
-  const { auth } = useAccesly();
-  const loggedIn = auth.status === "authenticated";
   const [showDrop, setShowDrop] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [showStep1Drop, setShowStep1Drop] = useState(false);
   const [showStep2Drop, setShowStep2Drop] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
-  const [showWallet, setShowWallet] = useState(false);
-  const [payService, setPayService] = useState<ServiceKey | null>(null);
-  const [postPay, setPostPay] = useState<ServiceKey | null>(null);
-
-  // Service CTA: login-gate → if already paid open the post-pay flow, else pay.
-  const handleService = (svc: ServiceKey) => {
-    if (!loggedIn) {
-      auth.signInWithGoogle();
-      return;
-    }
-    if (typeof window !== "undefined" && localStorage.getItem(paidKey(svc))) {
-      setPostPay(svc);
-      return;
-    }
-    setPayService(svc);
-  };
-
-  const handlePaid = (svc: ServiceKey) => {
-    if (typeof window !== "undefined") localStorage.setItem(paidKey(svc), "1");
-    setPayService(null);
-    setPostPay(svc); // #4: post-pago solo se abre tras pagar
-  };
 
   return (
     <div className="min-h-screen" style={{ background: "var(--cream)" }}>
-      {/* ========== CONNECT BUTTON PORTAL (outside nav for modal z-index) ========== */}
-      <div className="connect-button-portal">
-        {loggedIn ? (
-          <div className="user-pill-wrapper" style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <button
-              onClick={() => setShowWallet(true)}
-              className="user-pill"
-              title="Abrir mi wallet"
-              style={{ cursor: "pointer" }}
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/logo-opportuni.png" alt="" className="user-pill-avatar" />
-              <span>{displayName(auth.username)}</span>
-            </button>
-            <button
-              onClick={() => auth.signOut()}
-              title="Cerrar sesión"
-              aria-label="Cerrar sesión"
-              style={{
-                width: 34,
-                height: 34,
-                borderRadius: "50%",
-                border: "2.5px solid var(--dark)",
-                background: "var(--cream)",
-                boxShadow: "2px 2px 0 var(--dark)",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--dark)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                <polyline points="16 17 21 12 16 7" />
-                <line x1="21" y1="12" x2="9" y2="12" />
-              </svg>
-            </button>
-          </div>
-        ) : (
-          <button
-            onClick={() => auth.signInWithGoogle()}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "0.55rem",
-              padding: "0.7rem 1.4rem",
-              background: "linear-gradient(135deg, var(--rosa) 0%, var(--nar) 100%)",
-              color: "#ffffff",
-              border: "2.5px solid var(--dark)",
-              borderRadius: "9999px",
-              fontSize: "0.95rem",
-              fontWeight: 700,
-              cursor: "pointer",
-              whiteSpace: "nowrap",
-              transition: "transform 0.15s, box-shadow 0.15s",
-              boxShadow: "3px 3px 0 var(--dark)",
-              fontFamily: "Gabarito, var(--font-body), system-ui, sans-serif",
-            }}
-          >
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-              <path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2.5" />
-              <path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4" />
-            </svg>
-            Iniciar sesión
-          </button>
-        )}
-      </div>
-
       {/* ========== NAV ========== */}
       <nav className="nav-bento">
         <div className="flex items-center gap-[10px]">
@@ -503,7 +398,7 @@ export default function Home() {
 
             <div className="grid md:grid-cols-3 gap-6">
               {/* Review de CV */}
-              <button type="button" onClick={() => handleService("cv")} className="bento p-0 overflow-hidden group cursor-pointer block w-full text-left">
+              <div className="bento p-0 overflow-hidden block w-full text-left" style={{ opacity: 0.65 }} aria-disabled="true">
                 <div className="p-8 flex items-center justify-center" style={{ background: "var(--rosa)", minHeight: "180px" }}>
                   <svg viewBox="0 0 120 140" fill="none" className="w-24">
                     {/* Corona */}
@@ -531,15 +426,14 @@ export default function Home() {
                     <span className="badge badge-rosa">PDF</span>
                     <span className="badge badge-rosa">Feedback</span>
                   </div>
-                  <span className="w-full py-3 px-4 rounded-full font-bold text-sm text-white flex items-center justify-center gap-2 border-2" style={{ background: "var(--rosa)", borderColor: "var(--dark)", boxShadow: "3px 3px 0 var(--dark)" }}>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                    Pedir mi CV
+                  <span className="w-full py-3 px-4 rounded-full font-bold text-sm flex items-center justify-center gap-2 border-2" style={{ background: "var(--cream2)", borderColor: "var(--dark)", boxShadow: "3px 3px 0 var(--dark)", color: "var(--dark)" }}>
+                    Próximamente ✦
                   </span>
                 </div>
-              </button>
+              </div>
 
               {/* Asesoría */}
-              <button type="button" onClick={() => handleService("asesoria")} className="bento p-0 overflow-hidden group cursor-pointer block w-full text-left">
+              <div className="bento p-0 overflow-hidden block w-full text-left" style={{ opacity: 0.65 }} aria-disabled="true">
                 <div className="p-8 flex items-center justify-center" style={{ background: "var(--cream2)", minHeight: "180px" }}>
                   <svg viewBox="0 0 140 120" fill="none" className="w-28">
                     {/* Burbuja teal (arriba izq) */}
@@ -566,12 +460,11 @@ export default function Home() {
                     <span className="badge badge-naranja">Mentores</span>
                     <span className="badge badge-naranja">30 min</span>
                   </div>
-                  <span className="w-full py-3 px-4 rounded-full font-bold text-sm flex items-center justify-center gap-2 border-2" style={{ background: "var(--nar)", borderColor: "var(--dark)", boxShadow: "3px 3px 0 var(--dark)", color: "var(--dark)" }}>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                    Agendar sesión
+                  <span className="w-full py-3 px-4 rounded-full font-bold text-sm flex items-center justify-center gap-2 border-2" style={{ background: "var(--cream2)", borderColor: "var(--dark)", boxShadow: "3px 3px 0 var(--dark)", color: "var(--dark)" }}>
+                    Próximamente ✦
                   </span>
                 </div>
-              </button>
+              </div>
 
               {/* Chat */}
               <a href="https://wa.me/522205414251?text=Hola!" target="_blank" rel="noopener noreferrer" className="bento p-0 overflow-hidden group cursor-pointer block">
@@ -770,20 +663,6 @@ export default function Home() {
           </div>
         </footer>
       </main>
-
-      {showWallet && <WalletModal onClose={() => setShowWallet(false)} />}
-
-      {payService && (
-        <PayModal
-          service={payService}
-          onClose={() => setPayService(null)}
-          onPaid={handlePaid}
-          onNeedWallet={() => setShowWallet(true)}
-        />
-      )}
-
-      {postPay === "cv" && <CvUploadModal onClose={() => setPostPay(null)} />}
-      {postPay === "asesoria" && <AsesoriaModal onClose={() => setPostPay(null)} />}
     </div>
   );
 }

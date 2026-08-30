@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PDFDocument, PDFFont, PDFPage, StandardFonts, rgb } from "pdf-lib";
-import { isAdminWallet } from "../../../lib/submissions";
+import { ADMIN_API_ENABLED } from "../../../lib/submissions";
 import { getVacanteById, sbRpc } from "../../../lib/supabase";
 
 export const runtime = "nodejs";
@@ -38,14 +38,15 @@ interface Postulante {
 }
 
 // Reporte PDF de una vacante: clicks, postulaciones y lista de postulantes.
-// Gate por wallet admin (query `w` porque es un <a> de descarga, igual que
-// /api/admin/download).
+// Desactivada junto con el dashboard (ver ADMIN_API_ENABLED).
 export async function GET(req: NextRequest) {
-  const url = new URL(req.url);
-  const wallet = req.headers.get("x-admin-wallet") ?? url.searchParams.get("w");
-  if (!isAdminWallet(wallet)) {
-    return NextResponse.json({ ok: false, error: "No autorizado." }, { status: 403 });
+  if (!ADMIN_API_ENABLED) {
+    return NextResponse.json(
+      { ok: false, error: "El dashboard está desactivado." },
+      { status: 503 }
+    );
   }
+  const url = new URL(req.url);
 
   const id = url.searchParams.get("vacante") ?? "";
   const vacante = id ? await getVacanteById(id).catch(() => null) : null;

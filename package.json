@@ -9,15 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@accesly/core": "^1.25.0",
-    "@accesly/react": "^2.11.0",
     "@anthropic-ai/sdk": "^0.74.0",
     "@react-three/drei": "^9.92.7",
     "@react-three/fiber": "^8.15.19",
-    "@stellar/stellar-sdk": "^16.0.1",
     "@types/three": "^0.182.0",
     "@vercel/blob": "^2.6.1",
-    "accesly": "^0.1.3",
     "next": "14.2.18",
     "pdf-lib": "^1.17.1",
     "react": "^18.3.1",

@@ -1,17 +1,13 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
-  // 'class' so the Accesly kit's `dark:` utilities never activate from the OS
-  // color scheme — the Opportuni UI is always light.
+  // 'class' so no `dark:` utility ever activates from the OS color scheme —
+  // the Opportuni UI is always light.
   darkMode: "class",
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
-    // Generate the Tailwind classes used inside the Accesly kit components
-    // (WalletHome, BalanceCard, MovementsList, SendFlow, …). Without this they
-    // render unstyled → invisible text + broken layout.
-    "./node_modules/@accesly/react/dist/**/*.{js,cjs}",
   ],
   theme: {
     extend: {

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { isAdminWallet } from "../../../lib/submissions";
+import { ADMIN_API_ENABLED } from "../../../lib/submissions";
 import { sbRpc } from "../../../lib/supabase";
 
 export const runtime = "nodejs";
@@ -24,12 +24,13 @@ interface Postulante {
 
 // Conteos de clicks/postulantes por vacante para el dashboard admin.
 // Con ?vacante={id} devuelve el detalle de postulantes de esa vacante.
-// Gateado por la wallet Accesly del caller (x-admin-wallet), igual que
-// /api/admin/submissions.
+// Desactivada junto con el resto del dashboard (ver ADMIN_API_ENABLED).
 export async function GET(req: NextRequest) {
-  const wallet = req.headers.get("x-admin-wallet");
-  if (!isAdminWallet(wallet)) {
-    return NextResponse.json({ ok: false, error: "No autorizado." }, { status: 403 });
+  if (!ADMIN_API_ENABLED) {
+    return NextResponse.json(
+      { ok: false, error: "El dashboard está desactivado." },
+      { status: 503 }
+    );
   }
   const vacanteId = new URL(req.url).searchParams.get("vacante");
   try {
@@ -49,9 +50,11 @@ export async function GET(req: NextRequest) {
 
 // POST — crea una vacante nueva desde el dashboard admin.
 export async function POST(req: NextRequest) {
-  const wallet = req.headers.get("x-admin-wallet");
-  if (!isAdminWallet(wallet)) {
-    return NextResponse.json({ ok: false, error: "No autorizado." }, { status: 403 });
+  if (!ADMIN_API_ENABLED) {
+    return NextResponse.json(
+      { ok: false, error: "El dashboard está desactivado." },
+      { status: 503 }
+    );
   }
   try {
     const body = await req.json();

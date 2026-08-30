@@ -1,6 +1,5 @@
 "use client";
 
-import { useAccesly } from "@accesly/react";
 import { useState } from "react";
 
 const RAW = process.env.NEXT_PUBLIC_CALENDLY_URL ?? "";
@@ -12,10 +11,9 @@ const EMBED =
 // After paying for Asesoría: capture a contact form (so Vianey has the record
 // in the dashboard), then show the Google Calendar to book the slot.
 export default function AsesoriaModal({ onClose }: { onClose: () => void }) {
-  const { auth } = useAccesly();
   const [step, setStep] = useState<"form" | "calendar">("form");
   const [nombre, setNombre] = useState("");
-  const [email, setEmail] = useState(auth.username ?? "");
+  const [email, setEmail] = useState("");
   const [whatsapp, setWhatsapp] = useState("");
   const [tema, setTema] = useState("");
   const [saving, setSaving] = useState(false);

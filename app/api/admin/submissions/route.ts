@@ -1,14 +1,16 @@
-import { NextRequest, NextResponse } from "next/server";
-import { listSubmissions, isAdminWallet } from "../../../lib/submissions";
+import { NextResponse } from "next/server";
+import { listSubmissions, ADMIN_API_ENABLED } from "../../../lib/submissions";
 
 export const runtime = "nodejs";
 
-// Lists CV + asesoría submissions for the admin dashboard. Gated by the
-// caller's Accesly wallet (sent in x-admin-wallet) against NEXT_PUBLIC_ADMIN_WALLETS.
-export async function GET(req: NextRequest) {
-  const wallet = req.headers.get("x-admin-wallet");
-  if (!isAdminWallet(wallet)) {
-    return NextResponse.json({ ok: false, error: "No autorizado." }, { status: 403 });
+// Lista los CVs + asesorías del dashboard admin. Desactivada: el gate por
+// wallet Accesly se retiró y todavía no hay uno nuevo (ver ADMIN_API_ENABLED).
+export async function GET() {
+  if (!ADMIN_API_ENABLED) {
+    return NextResponse.json(
+      { ok: false, error: "El dashboard está desactivado." },
+      { status: 503 }
+    );
   }
   const all = await listSubmissions();
   return NextResponse.json({

@@ -1,6 +1,5 @@
 "use client";
 
-import { useAccesly } from "@accesly/react";
 import { useState } from "react";
 
 type Status = "idle" | "uploading" | "done" | "error";
@@ -11,10 +10,9 @@ const REQUIRED = [
 ] as const;
 
 export default function CvUploadModal({ onClose }: { onClose: () => void }) {
-  const { auth } = useAccesly();
   const [form, setForm] = useState({
     nombre: "",
-    email: auth.username ?? "",
+    email: "",
     whatsapp: "",
     ciudadPais: "",
     linkedin: "",
